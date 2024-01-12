@@ -62,6 +62,16 @@ void uint_linked_list::remove(unsigned int data) {
     }
 }
 
+int uint_linked_list::length() {
+    int count = 0;
+    Node* current = head;
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
 unsigned int& uint_linked_list::operator[](int index) {
     Node* current = head;
     for (int i = 0; i < index && current != nullptr; i++) {

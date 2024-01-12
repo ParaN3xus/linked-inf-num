@@ -17,6 +17,7 @@ public:
     void append(unsigned int data);
     void insert(int index, unsigned int data);
     void remove(unsigned int data);
+    int length();
     unsigned int& operator[](int index);
 };
 
