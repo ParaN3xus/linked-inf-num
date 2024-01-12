@@ -25,6 +25,7 @@ void uint_linked_list::append(unsigned int data) {
     }
 }
 
+// insert before the index, new elem will become new elem on index
 void uint_linked_list::insert(int index, unsigned int data) {
     if (index < 0) return;
     Node* newNode = new Node{data, nullptr};
