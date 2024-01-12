@@ -4,6 +4,16 @@
 
 uint_linked_list::uint_linked_list() : head(nullptr) {}
 
+uint_linked_list::uint_linked_list(const uint_linked_list& other) {
+    head = nullptr;
+
+    Node* cur = other.head;
+    while (cur != nullptr) {
+        append(cur->data);
+        cur = cur->next;
+    }
+}
+
 uint_linked_list::~uint_linked_list() {
     while (head != nullptr) {
         Node* temp = head;

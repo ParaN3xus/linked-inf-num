@@ -12,6 +12,7 @@ private:
 
 public:
     uint_linked_list();
+    uint_linked_list(const uint_linked_list& other);
     ~uint_linked_list();
 
     void append(unsigned int data);
