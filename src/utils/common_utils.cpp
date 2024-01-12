@@ -20,3 +20,29 @@ std::string inf_num_str2bin_str(std::string num) {
     }
     return binary;
 }
+
+bool is_add_overflow(unsigned int a, bool carry) {
+    if (carry && a == UINT_MAX) {
+        return true;
+    }
+    return false;
+}
+
+bool is_add_overflow(unsigned int a, unsigned int b) {
+    if (a > UINT_MAX - b) {
+        return true;
+    }
+    return false;
+}
+
+bool is_add_overflow(unsigned int a, unsigned int b, bool carry) {
+    if (is_add_overflow(a, b)) {
+        return true;
+    }
+
+    if (carry && a + b == UINT_MAX) {
+        return true;
+    }
+
+    return false;
+}

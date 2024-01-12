@@ -8,9 +8,19 @@
 class inf_int {
 private:
     bool sign;
-    uint_linked_list digits;
+    uint_linked_list *digits;
+
+    static inf_int abs_add(inf_int a, inf_int b);
+    static inf_int abs_sub(inf_int a, inf_int b);
+
 public:
+    inf_int();
     inf_int(std::string num);
+
+    bool is_positive();
+    static inf_int add(inf_int a, inf_int b);
+    static inf_int sub(inf_int a, inf_int b);
+
     ~inf_int();
 };
 

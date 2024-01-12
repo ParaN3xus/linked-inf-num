@@ -10,13 +10,15 @@ uint_linked_list::~uint_linked_list() {
         head = head->next;
         delete temp;
     }
+    head = nullptr;
 }
 
 void uint_linked_list::append(unsigned int data) {
-    Node* newNode = new Node{data, nullptr};
+    Node* newNode = new Node{ data, nullptr };
     if (head == nullptr) {
         head = newNode;
-    } else {
+    }
+    else {
         Node* current = head;
         while (current->next != nullptr) {
             current = current->next;
@@ -28,11 +30,12 @@ void uint_linked_list::append(unsigned int data) {
 // insert before the index, new elem will become new elem on index
 void uint_linked_list::insert(int index, unsigned int data) {
     if (index < 0) return;
-    Node* newNode = new Node{data, nullptr};
+    Node* newNode = new Node{ data, nullptr };
     if (index == 0) {
         newNode->next = head;
         head = newNode;
-    } else {
+    }
+    else {
         Node* current = head;
         for (int i = 0; i < index - 1 && current != nullptr; i++) {
             current = current->next;
@@ -80,7 +83,8 @@ unsigned int& uint_linked_list::operator[](int index) {
     }
     if (current != nullptr) {
         return current->data;
-    } else {
+    }
+    else {
         throw std::out_of_range("Index out of range");
     }
 }
