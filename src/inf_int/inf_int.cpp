@@ -13,7 +13,7 @@ inf_int::inf_int(std::string num) {
     digits.append(0);
 
     int cnt = 0;
-    std::string binary = infNumStr2BinStr(num);
+    std::string binary = inf_num_str2bin_str(num);
     for (int i = binary.size() - 1; i >= 0; --i) {
         digits[0] += (binary[i] - '0') << cnt;
         cnt++;

@@ -1,6 +1,6 @@
 #include "common_utils.h"
 
-std::string infNumStr2BinStr(std::string num) {
+std::string inf_num_str2bin_str(std::string num) {
     std::string binary;
     while (num != "0") {
         binary = ((num.back() - '0') % 2 ? "1" : "0") + binary;
