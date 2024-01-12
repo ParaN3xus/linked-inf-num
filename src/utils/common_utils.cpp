@@ -20,5 +20,3 @@ std::string infNumStr2BinStr(std::string num) {
     }
     return binary;
 }
-
-const int INF_INT_DIGIT_SIZE = sizeof(int) * 8;
