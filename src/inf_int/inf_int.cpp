@@ -25,5 +25,6 @@ inf_int::inf_int(std::string num) {
 }
 
 inf_int::~inf_int() {
+    digits.~uint_linked_list();
 }
 
