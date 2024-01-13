@@ -21,6 +21,9 @@ public:
     int length();
     std::string to_bit_string();
     
+    static bool is_equal(uint_linked_list a, uint_linked_list b);
+    static bool is_bitval_less_than(uint_linked_list a, uint_linked_list b);
+    
     unsigned int& operator[](int index);
     uint_linked_list& operator=(const uint_linked_list& other);
 };

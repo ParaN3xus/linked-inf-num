@@ -88,10 +88,9 @@ int uint_linked_list::length() {
     return count;
 }
 
-std::string uint_linked_list::to_bit_string()
-{
+std::string uint_linked_list::to_bit_string() {
     std::string res = "";
-    
+
     Node* current = head;
     while (current != nullptr) {
         res = res + std::bitset<INF_INT_DIGIT_SIZE>(current->data).to_string();
@@ -99,6 +98,42 @@ std::string uint_linked_list::to_bit_string()
     }
     return res;
 }
+
+bool uint_linked_list::is_equal(uint_linked_list a, uint_linked_list b) {
+    Node* cur_a = a.head;
+    Node* cur_b = b.head;
+    while (cur_a != nullptr && cur_b != nullptr) {
+        if (cur_a->data != cur_b->data) {
+            return false;
+        }
+        cur_a = cur_a->next;
+        cur_b = cur_b->next;
+    }
+    return cur_a == nullptr && cur_b == nullptr;
+}
+
+bool uint_linked_list::is_bitval_less_than(uint_linked_list a, uint_linked_list b) {
+    if (a.length() != b.length()) {
+        return a.length() < b.length();
+    }
+
+    Node* cur_a = a.head;
+    Node* cur_b = b.head;
+
+    while (cur_a != nullptr && cur_b != nullptr) {
+        if (cur_a->data < cur_b->data) {
+            return true;
+        } else if (cur_a->data > cur_b->data) {
+            return false;
+        }
+
+        cur_a = cur_a->next;
+        cur_b = cur_b->next;
+    }
+
+    return false;
+}
+
 
 unsigned int& uint_linked_list::operator[](int index) {
     Node* current = head;
@@ -114,8 +149,8 @@ unsigned int& uint_linked_list::operator[](int index) {
 }
 
 uint_linked_list& uint_linked_list::operator=(const uint_linked_list& other) {
-    if (this != &other) { 
-        uint_linked_list *temp = new uint_linked_list(other);
+    if (this != &other) {
+        uint_linked_list* temp = new uint_linked_list(other);
         head = temp->head;
     }
 

@@ -11,6 +11,7 @@ private:
 
     static inf_int abs_add(inf_int a, inf_int b);
     static inf_int abs_sub(inf_int a, inf_int b);
+    static bool is_abs_less_than(inf_int a, inf_int b);
 
 public:
     inf_int();
@@ -22,11 +23,20 @@ public:
 
     static inf_int add(inf_int a, inf_int b);
     static inf_int sub(inf_int a, inf_int b);
+    static bool is_equal(inf_int a, inf_int b);
+    static bool is_less_than(inf_int a, inf_int b);
 
     ~inf_int();
 };
 
 inf_int operator-(inf_int a, inf_int b);
 inf_int operator+(inf_int a, inf_int b);
+
+
+bool operator==(inf_int a, inf_int b);
+bool operator<(inf_int a, inf_int b);
+bool operator>(inf_int a, inf_int b);
+bool operator<=(inf_int a, inf_int b);
+bool operator>=(inf_int a, inf_int b);
 
 #endif // INF_INT_H

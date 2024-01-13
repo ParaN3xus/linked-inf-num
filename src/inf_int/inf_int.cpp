@@ -1,6 +1,6 @@
-#include "inf_int.h"
-#include "../utils/common_utils.cpp"
 #include <math.h>
+#include "inf_int.h"
+#include "../utils/common_utils.h"
 #include "../uint_linked_list/uint_linked_list.h"
 
 inf_int::inf_int() {
@@ -70,14 +70,13 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
         carry = is_add_overflow(a.digits[a.digits.length() - i - 1], b.digits[b.digits.length() - i - 1], carry);
     }
 
-    inf_int *x, *y;
+    inf_int* x, * y;
 
     if (a.digits.length() < b.digits.length()) {
         x = &b;
         y = &a;
     }
-    else
-    {
+    else {
         x = &a;
         y = &b;
     }
@@ -147,13 +146,37 @@ inf_int inf_int::sub(inf_int a, inf_int b) {
     }
 
     // - -
-    if (!a.is_positive() && !b.is_positive()) {
-        tmp = abs_sub(a, b);
-        tmp.sign = true;
-        return tmp;
-    }
-
+    tmp = abs_sub(a, b);
+    tmp.sign = true;
     return tmp;
+}
+
+bool inf_int::is_equal(inf_int a, inf_int b) {
+    if (a.sign != b.sign)
+        return false;
+
+    return uint_linked_list::is_equal(a.digits, b.digits);
+}
+
+bool inf_int::is_abs_less_than(inf_int a, inf_int b) {
+    return uint_linked_list::is_bitval_less_than(a.digits, b.digits);
+}
+
+bool inf_int::is_less_than(inf_int a, inf_int b) {
+    // + -
+    if (a.sign && !b.sign)
+        return false;
+
+    // - +
+    if (!a.sign && b.sign)
+        return true;
+
+    // - -
+    if (a.sign && b.sign)
+        return !is_abs_less_than(a, b);
+
+    // + +
+    return is_abs_less_than(a, b);
 }
 
 
@@ -163,4 +186,24 @@ inf_int operator+(inf_int a, inf_int b) {
 
 inf_int operator-(inf_int a, inf_int b) {
     return inf_int::sub(a, b);
+}
+
+bool operator==(inf_int a, inf_int b) {
+    return inf_int::is_equal(a, b);
+}
+
+bool operator<(inf_int a, inf_int b) {
+    return inf_int::is_less_than(a, b);
+}
+
+bool operator<=(inf_int a, inf_int b) {
+    return a < b || a == b;
+}
+
+bool operator>(inf_int a, inf_int b) {
+    return !(a <= b);
+}
+
+bool operator>=(inf_int a, inf_int b) {
+    return !(a < b);
 }
