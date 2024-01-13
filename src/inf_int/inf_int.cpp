@@ -1,6 +1,5 @@
 #include "inf_int.h"
 #include "../utils/common_utils.cpp"
-#include "../uint_linked_list/uint_linked_list.cpp"
 #include <math.h>
 #include "../uint_linked_list/uint_linked_list.h"
 
@@ -43,8 +42,8 @@ bool inf_int::is_positive() {
     return !sign;
 }
 
-std::string inf_int::to_string(bool comma) {
-    std::string binstr = digits.bit_string();
+std::string inf_int::to_string(bool comma = false) {
+    std::string binstr = digits.to_bit_string();
 
     std::string res = "0";
     for (int i = binstr.size() - 1; i >= 0; --i) {
@@ -71,13 +70,21 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
         carry = is_add_overflow(a.digits[a.digits.length() - i - 1], b.digits[b.digits.length() - i - 1], carry);
     }
 
+    inf_int *x, *y;
+
     if (a.digits.length() < b.digits.length()) {
-        std::swap(a, b);
+        x = &b;
+        y = &a;
+    }
+    else
+    {
+        x = &a;
+        y = &b;
     }
 
-    for (int i = b.digits.length(); i < a.digits.length(); ++i) {
-        tmp->digits.insert(0, a.digits[a.digits.length() - i - 1] + carry);
-        carry = is_add_overflow(a.digits[a.digits.length() - i - 1], carry);
+    for (int i = y->digits.length(); i < x->digits.length(); ++i) {
+        tmp->digits.insert(0, x->digits[x->digits.length() - i - 1] + carry);
+        carry = is_add_overflow(x->digits[x->digits.length() - i - 1], carry);
     }
 
     return *tmp;
