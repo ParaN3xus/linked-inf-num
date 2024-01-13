@@ -1,7 +1,6 @@
 #ifndef INF_INT_H
 #define INF_INT_H
 
-#include <string>
 #include "../utils/common_utils.h"
 #include "../uint_linked_list/uint_linked_list.h"
 
@@ -25,5 +24,7 @@ public:
     ~inf_int();
 };
 
+inf_int operator-(inf_int a, inf_int b);
+inf_int operator+(inf_int a, inf_int b);
 
 #endif // INF_INT_H
