@@ -64,26 +64,34 @@ std::string inf_int::to_string(bool comma = false) {
 inf_int inf_int::abs_add(inf_int a, inf_int b) {
     inf_int tmp;
 
+    int len_a = a.digits.length();
+    int len_b = b.digits.length();
+
     bool carry = false;
-    for (int i = 0; i < std::min(a.digits.length(), b.digits.length()); ++i) {
-        carry = is_add_overflow(a.digits[a.digits.length() - i - 1], b.digits[b.digits.length() - i - 1], carry);
-        tmp.digits.insert(0, a.digits[a.digits.length() - i - 1] + b.digits[b.digits.length() - i - 1] + carry);
+    for (int i = 0; i < std::min(len_a, len_b); ++i) {
+        carry = is_add_overflow(a.digits[len_a - i - 1], b.digits[len_b - i - 1], carry);
+        tmp.digits.insert(0, a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + carry);
     }
 
     inf_int* x, * y;
+    int len_x, len_y;
 
-    if (a.digits.length() < b.digits.length()) {
+    if (len_a < len_b) {
         x = &b;
         y = &a;
+        len_x = len_b;
+        len_y = len_a;
     }
     else {
         x = &a;
         y = &b;
+        len_x = len_a;
+        len_y = len_b;
     }
 
-    for (int i = y->digits.length(); i < x->digits.length(); ++i) {
-        tmp.digits.insert(0, x->digits[x->digits.length() - i - 1] + carry);
-        carry = is_add_overflow(x->digits[x->digits.length() - i - 1], carry);
+    for (int i = len_y; i < len_x; ++i) {
+        tmp.digits.insert(0, x->digits[len_x - i - 1] + carry);
+        carry = is_add_overflow(x->digits[len_x - i - 1], carry);
     }
 
     return tmp;
@@ -91,38 +99,41 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
 
 // +a - +b
 inf_int inf_int::abs_sub(inf_int a, inf_int b) {
-    if(is_abs_less_than(a, b)) {
+    if (is_abs_less_than(a, b)) {
         inf_int tmp = abs_sub(b, a);
         tmp.sign = true;
         return tmp;
     }
+
+    int len_a = a.digits.length();
+    int len_b = b.digits.length();
 
     inf_int res;
     unsigned int tmp;
 
     bool borrow = false;
     bool last_borrow = false;
-    for (int i = 0; i < std::min(a.digits.length(), b.digits.length()); ++i) {
-        borrow = is_sub_overflow(a.digits[a.digits.length() - i - 1], b.digits[b.digits.length() - i - 1], last_borrow);
-        if(borrow) {
-            tmp = UINT_MAX - b.digits[b.digits.length() - i - 1] - last_borrow;
-            tmp += a.digits[a.digits.length() - i - 1] + 1;
+    for (int i = 0; i < std::min(len_a, len_b); ++i) {
+        borrow = is_sub_overflow(a.digits[len_a - i - 1], b.digits[len_b - i - 1], last_borrow);
+        if (borrow) {
+            tmp = UINT_MAX - b.digits[len_b - i - 1] - last_borrow;
+            tmp += a.digits[len_a - i - 1] + 1;
         }
         else {
-            tmp = a.digits[a.digits.length() - i - 1] - b.digits[b.digits.length() - i - 1] - last_borrow;
+            tmp = a.digits[len_a - i - 1] - b.digits[len_b - i - 1] - last_borrow;
         }
         last_borrow = borrow;
 
         res.digits.insert(0, tmp);
     }
 
-    for (int i = b.digits.length(); i < a.digits.length(); ++i) {
-        borrow = is_sub_overflow(a.digits[a.digits.length() - i - 1], last_borrow);
-        if(borrow) {
+    for (int i = len_b; i < len_a; ++i) {
+        borrow = is_sub_overflow(a.digits[len_a - i - 1], last_borrow);
+        if (borrow) {
             tmp = UINT_MAX;
         }
         else {
-            tmp = a.digits[a.digits.length() - i - 1] - last_borrow;
+            tmp = a.digits[len_a - i - 1] - last_borrow;
         }
         last_borrow = borrow;
 
