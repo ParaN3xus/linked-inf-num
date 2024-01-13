@@ -4,12 +4,15 @@
 #include <math.h>
 
 inf_int::inf_int() {
-    digits = new uint_linked_list;
+}
+
+inf_int::inf_int(const inf_int& other)
+{
+    sign = other.sign;
+    digits = other.digits;
 }
 
 inf_int::inf_int(std::string num) {
-    digits = new uint_linked_list;
-
     if (num[0] == '-') {
         sign = true;
         num.erase(num.begin());
@@ -18,15 +21,15 @@ inf_int::inf_int(std::string num) {
         sign = false;
     }
 
-    digits->append(0);
+    digits.append(0);
 
     int cnt = 0;
     std::string binary = inf_num_str2bin_str(num);
     for (int i = binary.size() - 1; i >= 0; --i) {
-        (*digits)[0] += (binary[i] - '0') << cnt;
+        digits[0] += (binary[i] - '0') << cnt;
         cnt++;
         if (cnt == INF_INT_DIGIT_SIZE) {
-            digits->insert(0, 0);
+            digits.insert(0, 0);
             cnt = 0;
         }
     }
@@ -47,26 +50,25 @@ bool inf_int::is_positive() {
 }
 
 inf_int::~inf_int() {
-    digits->~uint_linked_list();
 }
 
 inf_int inf_int::abs_add(inf_int a, inf_int b) {
     inf_int* tmp = new inf_int;
 
     bool carry = false;
-    for (int i = 0; i < std::min(a.digits->length(), b.digits->length()); ++i) {
-        tmp->digits->insert(0, (*a.digits)[a.digits->length() - i - 1] + (*b.digits)[b.digits->length() - i - 1] + carry);
-        carry = is_add_overflow((*a.digits)[a.digits->length() - i - 1], (*b.digits)[b.digits->length() - i - 1], carry);
+    for (int i = 0; i < std::min(a.digits.length(), b.digits.length()); ++i) {
+        tmp->digits.insert(0, a.digits[a.digits.length() - i - 1] + b.digits[b.digits.length() - i - 1] + carry);
+        carry = is_add_overflow(a.digits[a.digits.length() - i - 1], b.digits[b.digits.length() - i - 1], carry);
     }
 
-    if (a.digits->length() < b.digits->length())
+    if (a.digits.length() < b.digits.length())
     {
         std::swap(a, b);
     }
 
-    for (int i = b.digits->length(); i < a.digits->length(); ++i) {
-        tmp->digits->insert(0, (*a.digits)[a.digits->length() - i - 1] + carry);
-        carry = is_add_overflow((*a.digits)[a.digits->length() - i - 1], carry);
+    for (int i = b.digits.length(); i < a.digits.length(); ++i) {
+        tmp->digits.insert(0, a.digits[a.digits.length() - i - 1] + carry);
+        carry = is_add_overflow(a.digits[a.digits.length() - i - 1], carry);
     }
 
     return *tmp;
