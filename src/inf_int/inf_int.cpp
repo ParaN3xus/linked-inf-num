@@ -46,9 +46,9 @@ std::string inf_int::to_string(bool comma = false) {
     std::string binstr = digits.to_bit_string();
 
     std::string res = "0";
-    for (int i = binstr.size() - 1; i >= 0; --i) {
+    for (int i = 0; i < binstr.length(); ++i) {
         res = binstr_mut2(res);
-        if (binstr[i] == 1) {
+        if (binstr[i] == '1') {
             res = binstr_add1(res);
         }
     }
