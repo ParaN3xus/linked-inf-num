@@ -94,7 +94,7 @@ std::string uint_linked_list::to_bit_string()
     
     Node* current = head;
     while (current != nullptr) {
-        res = res + std::bitset<UINT_MAX>(current->data).to_string();
+        res = res + std::bitset<INF_INT_DIGIT_SIZE>(current->data).to_string();
         current = current->next;
     }
     return res;
@@ -115,8 +115,8 @@ unsigned int& uint_linked_list::operator[](int index) {
 
 uint_linked_list& uint_linked_list::operator=(const uint_linked_list& other) {
     if (this != &other) { 
-        uint_linked_list temp(other);
-        head = temp.head;
+        uint_linked_list *temp = new uint_linked_list(other);
+        head = temp->head;
     }
 
     return *this;
