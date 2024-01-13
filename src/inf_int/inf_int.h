@@ -9,34 +9,34 @@ private:
     bool sign;
     uint_linked_list digits;
 
-    static inf_int abs_add(inf_int a, inf_int b);
-    static inf_int abs_sub(inf_int a, inf_int b);
-    static bool is_abs_less_than(inf_int a, inf_int b);
+    static inf_int abs_add(const inf_int& a, const inf_int& b);
+    static inf_int abs_sub(const inf_int& a, const inf_int& b);
+    static bool is_abs_less_than(const inf_int& a, const inf_int& b);
 
 public:
     inf_int();
     inf_int(const inf_int& other);
-    inf_int(std::string num);
+    inf_int(const std::string& num);
 
-    bool is_positive();
-    std::string to_string(bool comma);
+    bool is_positive() const;
+    std::string to_string(const bool& comma) const;
 
-    static inf_int add(inf_int a, inf_int b);
-    static inf_int sub(inf_int a, inf_int b);
-    static bool is_equal(inf_int a, inf_int b);
-    static bool is_less_than(inf_int a, inf_int b);
+    static inf_int add(const inf_int& a, const inf_int& b);
+    static inf_int sub(const inf_int& a, const inf_int& b);
+    static bool is_equal(const inf_int& a, const inf_int& b);
+    static bool is_less_than(const inf_int& a, const inf_int& b);
 
     ~inf_int();
 };
 
-inf_int operator-(inf_int a, inf_int b);
-inf_int operator+(inf_int a, inf_int b);
+inf_int operator-(const inf_int& a, const inf_int& b);
+inf_int operator+(const inf_int& a, const inf_int& b);
 
 
-bool operator==(inf_int a, inf_int b);
-bool operator<(inf_int a, inf_int b);
-bool operator>(inf_int a, inf_int b);
-bool operator<=(inf_int a, inf_int b);
-bool operator>=(inf_int a, inf_int b);
+bool operator==(const inf_int& a, const inf_int& b);
+bool operator<(const inf_int& a, const inf_int& b);
+bool operator>(const inf_int& a, const inf_int& b);
+bool operator<=(const inf_int& a, const inf_int& b);
+bool operator>=(const inf_int& a, const inf_int& b);
 
 #endif // INF_INT_H

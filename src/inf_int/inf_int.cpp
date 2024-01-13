@@ -11,7 +11,8 @@ inf_int::inf_int(const inf_int& other) {
     digits = other.digits;
 }
 
-inf_int::inf_int(std::string num) {
+inf_int::inf_int(const std::string& s) {
+    std::string num = s;
     if (num[0] == '-') {
         sign = true;
         num.erase(num.begin());
@@ -38,11 +39,11 @@ inf_int::~inf_int() {
 }
 
 
-bool inf_int::is_positive() {
+bool inf_int::is_positive() const {
     return !sign;
 }
 
-std::string inf_int::to_string(bool comma = false) {
+std::string inf_int::to_string(const bool& comma = false) const {
     std::string binstr = digits.to_bit_string();
 
     std::string res = "0";
@@ -61,7 +62,8 @@ std::string inf_int::to_string(bool comma = false) {
 }
 
 
-inf_int inf_int::abs_add(inf_int a, inf_int b) {
+inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
+    inf_int a = l, b = r;
     inf_int tmp;
 
     int len_a = a.digits.length();
@@ -98,7 +100,9 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
 }
 
 // +a - +b
-inf_int inf_int::abs_sub(inf_int a, inf_int b) {
+inf_int inf_int::abs_sub(const inf_int& l, const inf_int& r) {
+    inf_int a = l, b = r;
+
     if (is_abs_less_than(a, b)) {
         inf_int tmp = abs_sub(b, a);
         tmp.sign = true;
@@ -143,7 +147,7 @@ inf_int inf_int::abs_sub(inf_int a, inf_int b) {
     return res;
 }
 
-inf_int inf_int::add(inf_int a, inf_int b) {
+inf_int inf_int::add(const inf_int& a, const inf_int& b) {
     inf_int tmp;
 
     // + +
@@ -168,7 +172,7 @@ inf_int inf_int::add(inf_int a, inf_int b) {
     return tmp;
 }
 
-inf_int inf_int::sub(inf_int a, inf_int b) {
+inf_int inf_int::sub(const inf_int& a, const inf_int& b) {
     inf_int tmp;
 
     // + +
@@ -194,18 +198,18 @@ inf_int inf_int::sub(inf_int a, inf_int b) {
     return tmp;
 }
 
-bool inf_int::is_equal(inf_int a, inf_int b) {
+bool inf_int::is_equal(const inf_int& a, const inf_int& b) {
     if (a.sign != b.sign)
         return false;
 
     return uint_linked_list::is_equal(a.digits, b.digits);
 }
 
-bool inf_int::is_abs_less_than(inf_int a, inf_int b) {
+bool inf_int::is_abs_less_than(const inf_int& a, const inf_int& b) {
     return uint_linked_list::is_bitval_less_than(a.digits, b.digits);
 }
 
-bool inf_int::is_less_than(inf_int a, inf_int b) {
+bool inf_int::is_less_than(const inf_int& a, const inf_int& b) {
     // + -
     if (!a.sign && b.sign)
         return false;
@@ -223,30 +227,30 @@ bool inf_int::is_less_than(inf_int a, inf_int b) {
 }
 
 
-inf_int operator+(inf_int a, inf_int b) {
+inf_int operator+(const inf_int& a, const inf_int& b) {
     return inf_int::add(a, b);
 }
 
-inf_int operator-(inf_int a, inf_int b) {
+inf_int operator-(const inf_int& a, const inf_int& b) {
     return inf_int::sub(a, b);
 }
 
-bool operator==(inf_int a, inf_int b) {
+bool operator==(const inf_int& a, const inf_int& b) {
     return inf_int::is_equal(a, b);
 }
 
-bool operator<(inf_int a, inf_int b) {
+bool operator<(const inf_int& a, const inf_int& b) {
     return inf_int::is_less_than(a, b);
 }
 
-bool operator<=(inf_int a, inf_int b) {
+bool operator<=(const inf_int& a, const inf_int& b) {
     return a < b || a == b;
 }
 
-bool operator>(inf_int a, inf_int b) {
+bool operator>(const inf_int& a, const inf_int& b) {
     return !(a <= b);
 }
 
-bool operator>=(inf_int a, inf_int b) {
+bool operator>=(const inf_int& a, const inf_int& b) {
     return !(a < b);
 }

@@ -25,7 +25,7 @@ uint_linked_list::~uint_linked_list() {
     head = nullptr;
 }
 
-void uint_linked_list::append(unsigned int data) {
+void uint_linked_list::append(const unsigned int& data) {
     Node* newNode = new Node{ data, nullptr };
     if (head == nullptr) {
         head = newNode;
@@ -40,7 +40,7 @@ void uint_linked_list::append(unsigned int data) {
 }
 
 // insert before the index, new elem will become new elem on index
-void uint_linked_list::insert(int index, unsigned int data) {
+void uint_linked_list::insert(const int& index, const unsigned int& data) {
     if (index < 0) return;
     Node* newNode = new Node{ data, nullptr };
     if (index == 0) {
@@ -59,7 +59,7 @@ void uint_linked_list::insert(int index, unsigned int data) {
     }
 }
 
-void uint_linked_list::remove(unsigned int data) {
+void uint_linked_list::remove(const unsigned int& data) {
     if (head == nullptr) return;
     if (head->data == data) {
         Node* temp = head;
@@ -78,7 +78,7 @@ void uint_linked_list::remove(unsigned int data) {
     }
 }
 
-int uint_linked_list::length() {
+int uint_linked_list::length() const {
     int count = 0;
     Node* current = head;
     while (current != nullptr) {
@@ -88,7 +88,7 @@ int uint_linked_list::length() {
     return count;
 }
 
-std::string uint_linked_list::to_bit_string() {
+std::string uint_linked_list::to_bit_string() const{
     std::string res = "";
 
     Node* current = head;
@@ -99,7 +99,7 @@ std::string uint_linked_list::to_bit_string() {
     return res;
 }
 
-bool uint_linked_list::is_equal(uint_linked_list a, uint_linked_list b) {
+bool uint_linked_list::is_equal(const uint_linked_list& a, const uint_linked_list& b) {
     Node* cur_a = a.head;
     Node* cur_b = b.head;
     while (cur_a != nullptr && cur_b != nullptr) {
@@ -112,7 +112,7 @@ bool uint_linked_list::is_equal(uint_linked_list a, uint_linked_list b) {
     return cur_a == nullptr && cur_b == nullptr;
 }
 
-bool uint_linked_list::is_bitval_less_than(uint_linked_list a, uint_linked_list b) {
+bool uint_linked_list::is_bitval_less_than(const uint_linked_list& a, const uint_linked_list& b) {
     if (a.length() != b.length()) {
         return a.length() < b.length();
     }
@@ -135,7 +135,7 @@ bool uint_linked_list::is_bitval_less_than(uint_linked_list a, uint_linked_list 
 }
 
 
-unsigned int& uint_linked_list::operator[](int index) {
+unsigned int& uint_linked_list::operator[](const int& index) {
     if(current != nullptr && index == current_index + 1) {
         current_index++;
         current = current->next;
