@@ -46,3 +46,33 @@ bool is_add_overflow(unsigned int a, unsigned int b, bool carry) {
 
     return false;
 }
+
+std::string binstr_mut2(const std::string& num) {
+    std::string result;
+    int carry = 0;
+    for (int i = num.length() - 1; i >= 0; --i) {
+        int digit = (num[i] - '0') * 2 + carry;
+        carry = digit / 10;
+        digit %= 10;
+        result = std::to_string(digit) + result;
+    }
+    if (carry > 0) {
+        result = std::to_string(carry) + result;
+    }
+    return result;
+}
+
+std::string binstr_add1(const std::string& num) {
+    std::string result = num;
+    int carry = 1;
+    for (int i = num.length() - 1; i >= 0 && carry > 0; --i) {
+        int digit = (num[i] - '0') + carry;
+        carry = digit / 10;
+        digit %= 10;
+        result[i] = digit + '0';
+    }
+    if (carry > 0) {
+        result = "1" + result;
+    }
+    return result;
+}

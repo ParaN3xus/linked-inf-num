@@ -4,6 +4,10 @@
 #include<string>
 
 std::string inf_num_str2bin_str(std::string num);
+
+std::string binstr_mut2(const std::string& num);
+std::string binstr_add1(const std::string& num);
+
 const int INF_INT_DIGIT_SIZE = sizeof(int) * 8;
 #define UINT_MAX INF_INT_DIGIT_SIZE == 32 ? UINT32_MAX : UINT64_MAX
 
