@@ -164,11 +164,11 @@ bool inf_int::is_abs_less_than(inf_int a, inf_int b) {
 
 bool inf_int::is_less_than(inf_int a, inf_int b) {
     // + -
-    if (a.sign && !b.sign)
+    if (!a.sign && b.sign)
         return false;
 
     // - +
-    if (!a.sign && b.sign)
+    if (a.sign && !b.sign)
         return true;
 
     // - -
