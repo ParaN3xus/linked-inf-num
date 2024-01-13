@@ -98,3 +98,12 @@ unsigned int& uint_linked_list::operator[](int index) {
         throw std::out_of_range("Index out of range");
     }
 }
+
+uint_linked_list& uint_linked_list::operator=(const uint_linked_list& other) {
+    if (this != &other) { 
+        uint_linked_list temp(other);
+        std::swap(head, temp.head);
+    }
+
+    return *this;
+}

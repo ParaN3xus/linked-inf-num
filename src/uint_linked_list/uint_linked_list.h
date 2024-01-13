@@ -19,7 +19,9 @@ public:
     void insert(int index, unsigned int data);
     void remove(unsigned int data);
     int length();
+    
     unsigned int& operator[](int index);
+    uint_linked_list& operator=(const uint_linked_list& other);
 };
 
 #endif // UINT_LINKED_LIST_H
