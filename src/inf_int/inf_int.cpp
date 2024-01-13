@@ -89,6 +89,7 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
     return *tmp;
 }
 
+// +a - +b
 inf_int inf_int::abs_sub(inf_int a, inf_int b) {
     inf_int tmp;
     // to do
@@ -100,28 +101,24 @@ inf_int inf_int::add(inf_int a, inf_int b) {
     inf_int tmp;
 
     // + +
-    if (a.is_positive() && b.is_positive()) {
+    if (!a.sign && !b.sign) {
         return abs_add(a, b);
     }
 
     // + -
-    if (a.is_positive() && !b.is_positive()) {
+    if (!a.sign && b.sign) {
         return abs_sub(a, b);
     }
 
     // - +
-    if (!a.is_positive() && b.is_positive()) {
+    if (a.sign && !b.sign) {
         return abs_sub(b, a);
     }
 
     // - -
-    if (!a.is_positive() && !b.is_positive()) {
-        tmp = a + b;
+    tmp = a + b;
 
-        tmp.sign = true;
-        return tmp;
-    }
-
+    tmp.sign = true;
     return tmp;
 }
 
@@ -129,17 +126,17 @@ inf_int inf_int::sub(inf_int a, inf_int b) {
     inf_int tmp;
 
     // + +
-    if (a.is_positive() && b.is_positive()) {
+    if (!a.sign && !b.sign) {
         return abs_sub(a, b);
     }
 
     // + -
-    if (a.is_positive() && !b.is_positive()) {
+    if (!a.sign && b.sign) {
         return abs_add(a, b);
     }
 
     // - +
-    if (!a.is_positive() && b.is_positive()) {
+    if (a.sign && !b.sign) {
         tmp = abs_add(a, b);
         tmp.sign = true;
         return tmp;
