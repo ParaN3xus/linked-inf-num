@@ -9,6 +9,8 @@ private:
     };
 
     Node* head;
+    Node* current = nullptr;
+    int current_index = -1;
 
 public:
     uint_linked_list();

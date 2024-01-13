@@ -136,12 +136,21 @@ bool uint_linked_list::is_bitval_less_than(uint_linked_list a, uint_linked_list 
 
 
 unsigned int& uint_linked_list::operator[](int index) {
-    Node* current = head;
-    for (int i = 0; i < index && current != nullptr; i++) {
+    if(current != nullptr && index == current_index + 1) {
+        current_index++;
         current = current->next;
-    }
-    if (current != nullptr) {
         return current->data;
+    }
+
+    Node* tmp = head;
+    for (int i = 0; i < index && tmp != nullptr; i++) {
+        tmp = tmp->next;
+    }
+    if (tmp != nullptr) {
+        current = tmp;
+        current_index = index;
+    
+        return tmp->data;
     }
     else {
         throw std::out_of_range("Index out of range");
