@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <string>
+#include <bitset>
 #include "uint_linked_list.h"
 #include "../utils/common_utils.h"
-#include <bitset>
 
 uint_linked_list::uint_linked_list() : head(nullptr) {}
 
@@ -88,7 +88,7 @@ int uint_linked_list::length() {
     return count;
 }
 
-std::string uint_linked_list::bit_string()
+std::string uint_linked_list::to_bit_string()
 {
     std::string res = "";
     
@@ -116,7 +116,7 @@ unsigned int& uint_linked_list::operator[](int index) {
 uint_linked_list& uint_linked_list::operator=(const uint_linked_list& other) {
     if (this != &other) { 
         uint_linked_list temp(other);
-        std::swap(head, temp.head);
+        head = temp.head;
     }
 
     return *this;

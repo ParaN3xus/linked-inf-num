@@ -19,7 +19,7 @@ public:
     void insert(int index, unsigned int data);
     void remove(unsigned int data);
     int length();
-    std::string bit_string();
+    std::string to_bit_string();
     
     unsigned int& operator[](int index);
     uint_linked_list& operator=(const uint_linked_list& other);
