@@ -43,6 +43,24 @@ bool inf_int::is_positive() {
     return !sign;
 }
 
+std::string inf_int::to_string(bool comma) {
+    std::string binstr = digits.bit_string();
+
+    std::string res = "0";
+    for (int i = binstr.size() - 1; i >= 0; --i) {
+        res = binstr_mut2(res);
+        if (binstr[i] == 1) {
+            res = binstr_add1(res);
+        }
+    }
+
+    if (comma) {
+        res = add_commas(res);
+    }
+
+    return res;
+}
+
 
 inf_int inf_int::abs_add(inf_int a, inf_int b) {
     inf_int* tmp = new inf_int;

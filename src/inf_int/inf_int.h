@@ -18,6 +18,8 @@ public:
     inf_int(std::string num);
 
     bool is_positive();
+    std::string to_string(bool comma);
+
     static inf_int add(inf_int a, inf_int b);
     static inf_int sub(inf_int a, inf_int b);
 

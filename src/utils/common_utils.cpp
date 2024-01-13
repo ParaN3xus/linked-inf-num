@@ -76,3 +76,29 @@ std::string binstr_add1(const std::string& num) {
     }
     return result;
 }
+
+std::string add_commas(const std::string& input) {
+    size_t point = input.find('.');
+    
+    std::string ints = input.substr(0, point);
+    std::string decs = input.substr(point + 1);
+
+    if (ints[0] == '-') {
+        ints = '-' + ints.substr(1);
+    }
+
+    int count = 0;
+    for (int i = ints.size() - 1; i >= 0; --i) {
+        if (ints[i] == ',') {
+            continue;
+        }
+
+        count++;
+
+        if (count % 3 == 0 && i > 0) {
+            ints.insert(i, 1, ',');
+        }
+    }
+
+    return ints + ((point == std::string::npos) ? ("") : ("." + decs));
+}
