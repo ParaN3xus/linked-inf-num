@@ -2,12 +2,12 @@
 #include "../utils/common_utils.cpp"
 #include "../uint_linked_list/uint_linked_list.cpp"
 #include <math.h>
+#include "../uint_linked_list/uint_linked_list.h"
 
 inf_int::inf_int() {
 }
 
-inf_int::inf_int(const inf_int& other)
-{
+inf_int::inf_int(const inf_int& other) {
     sign = other.sign;
     digits = other.digits;
 }
@@ -35,22 +35,14 @@ inf_int::inf_int(std::string num) {
     }
 }
 
-inf_int operator+(inf_int a, inf_int b)
-{
-    return inf_int::add(a, b);
+inf_int::~inf_int() {
 }
 
-inf_int operator-(inf_int a, inf_int b)
-{
-    return inf_int::sub(a, b);
-}
 
 bool inf_int::is_positive() {
     return !sign;
 }
 
-inf_int::~inf_int() {
-}
 
 inf_int inf_int::abs_add(inf_int a, inf_int b) {
     inf_int* tmp = new inf_int;
@@ -61,8 +53,7 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
         carry = is_add_overflow(a.digits[a.digits.length() - i - 1], b.digits[b.digits.length() - i - 1], carry);
     }
 
-    if (a.digits.length() < b.digits.length())
-    {
+    if (a.digits.length() < b.digits.length()) {
         std::swap(a, b);
     }
 
@@ -73,7 +64,6 @@ inf_int inf_int::abs_add(inf_int a, inf_int b) {
 
     return *tmp;
 }
-
 
 inf_int inf_int::abs_sub(inf_int a, inf_int b) {
     inf_int tmp;
@@ -139,4 +129,13 @@ inf_int inf_int::sub(inf_int a, inf_int b) {
     }
 
     return tmp;
+}
+
+
+inf_int operator+(inf_int a, inf_int b) {
+    return inf_int::add(a, b);
+}
+
+inf_int operator-(inf_int a, inf_int b) {
+    return inf_int::sub(a, b);
 }
