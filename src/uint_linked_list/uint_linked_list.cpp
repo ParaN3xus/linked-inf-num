@@ -1,6 +1,8 @@
 #include <stdexcept>
+#include <string>
 #include "uint_linked_list.h"
-
+#include "../utils/common_utils.h"
+#include <bitset>
 
 uint_linked_list::uint_linked_list() : head(nullptr) {}
 
@@ -84,6 +86,18 @@ int uint_linked_list::length() {
         current = current->next;
     }
     return count;
+}
+
+std::string uint_linked_list::bit_string()
+{
+    std::string res = "";
+    
+    Node* current = head;
+    while (current != nullptr) {
+        res = res + std::bitset<UINT_MAX>(current->data).to_string();
+        current = current->next;
+    }
+    return res;
 }
 
 unsigned int& uint_linked_list::operator[](int index) {
