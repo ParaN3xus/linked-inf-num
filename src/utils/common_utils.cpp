@@ -47,6 +47,28 @@ bool is_add_overflow(unsigned int a, unsigned int b, bool carry) {
     return false;
 }
 
+bool is_sub_overflow(unsigned int a, bool borrow) {
+    if (borrow && a == 0) {
+        return true;
+    }
+    return false;
+}
+
+bool is_sub_overflow(unsigned int a, unsigned int b, bool borrow) {
+    if (b > a) {
+        return true;
+    }
+
+    // b = a 
+    if (b == a)
+    {
+        return borrow;
+    }
+
+    // b < a
+    return false;
+}
+
 std::string binstr_mut2(const std::string& num) {
     std::string result;
     int carry = 0;

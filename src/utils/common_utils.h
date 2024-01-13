@@ -9,6 +9,9 @@ bool is_add_overflow(unsigned int a, unsigned int b, bool carry);
 bool is_add_overflow(unsigned int a, unsigned int b);
 bool is_add_overflow(unsigned int a, bool carry);
 
+bool is_sub_overflow(unsigned int a, unsigned int b, bool borrow);
+bool is_sub_overflow(unsigned int a, bool borrow);
+
 std::string binstr_mut2(const std::string& num);
 std::string binstr_add1(const std::string& num);
 
