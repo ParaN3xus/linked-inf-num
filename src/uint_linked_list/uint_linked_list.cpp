@@ -59,22 +59,37 @@ void uint_linked_list::insert(const int& index, const unsigned int& data) {
     }
 }
 
-void uint_linked_list::remove(const unsigned int& data) {
-    if (head == nullptr) return;
-    if (head->data == data) {
+void uint_linked_list::remove(const int& index) {
+    if (index < 0 || index >= length()) {
+        throw std::out_of_range("Index out of range");
+    }
+
+    if (index == 0) {
         Node* temp = head;
         head = head->next;
         delete temp;
-        return;
     }
-    Node* current = head;
-    while (current->next != nullptr && current->next->data != data) {
-        current = current->next;
+    else {
+        Node* prev = nullptr;
+        Node* current = head;
+        int i = 0;
+
+        while (current != nullptr && i < index) {
+            prev = current;
+            current = current->next;
+            i++;
+        }
+
+        if (current != nullptr) {
+            prev->next = current->next;
+            delete current;
+        }
     }
-    if (current->next != nullptr) {
-        Node* temp = current->next;
-        current->next = current->next->next;
-        delete temp;
+}
+
+void uint_linked_list::remove_leading_zeros() {
+    while (head != nullptr && head->data == 0) {
+        remove(0);
     }
 }
 
@@ -88,7 +103,7 @@ int uint_linked_list::length() const {
     return count;
 }
 
-std::string uint_linked_list::to_bit_string() const{
+std::string uint_linked_list::to_bit_string() const {
     std::string res = "";
 
     Node* current = head;
@@ -123,7 +138,8 @@ bool uint_linked_list::is_bitval_less_than(const uint_linked_list& a, const uint
     while (cur_a != nullptr && cur_b != nullptr) {
         if (cur_a->data < cur_b->data) {
             return true;
-        } else if (cur_a->data > cur_b->data) {
+        }
+        else if (cur_a->data > cur_b->data) {
             return false;
         }
 
@@ -136,7 +152,7 @@ bool uint_linked_list::is_bitval_less_than(const uint_linked_list& a, const uint
 
 
 unsigned int& uint_linked_list::operator[](const int& index) {
-    if(current != nullptr && index == current_index + 1) {
+    if (current != nullptr && index == current_index + 1) {
         current_index++;
         current = current->next;
         return current->data;
@@ -149,7 +165,7 @@ unsigned int& uint_linked_list::operator[](const int& index) {
     if (tmp != nullptr) {
         current = tmp;
         current_index = index;
-    
+
         return tmp->data;
     }
     else {

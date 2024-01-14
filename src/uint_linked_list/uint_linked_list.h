@@ -19,7 +19,9 @@ public:
 
     void append(const unsigned int& data);
     void insert(const int& index, const unsigned int& data);
-    void remove(const unsigned int& data);
+    void remove(const int& index);
+    void remove_leading_zeros();
+    
     int length() const;
     std::string to_bit_string() const;
     

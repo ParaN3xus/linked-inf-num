@@ -33,6 +33,8 @@ inf_int::inf_int(const std::string& s) {
             cnt = 0;
         }
     }
+    
+    digits.remove_leading_zeros();
 }
 
 inf_int::~inf_int() {
@@ -113,6 +115,8 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
         tmp.digits.insert(0, carry);
     }
 
+    tmp.digits.remove_leading_zeros();
+
     return tmp;
 }
 
@@ -161,6 +165,8 @@ inf_int inf_int::abs_sub(const inf_int& l, const inf_int& r) {
         res.digits.insert(0, tmp);
     }
 
+    res.digits.remove_leading_zeros();
+
     return res;
 }
 
@@ -191,6 +197,8 @@ inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {
         res.digits.insert(0, carry);
     }
 
+    res.digits.remove_leading_zeros();
+    
     return res;
 }
 
@@ -205,6 +213,8 @@ inf_int inf_int::abs_mul(const inf_int& x, const inf_int& y) {
         tmp.lshift32(len_b - i - 1);
         res = abs_add(res, tmp);
     }
+
+    res.digits.remove_leading_zeros();
 
     return res;
 }
