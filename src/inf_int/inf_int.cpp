@@ -3,7 +3,7 @@
 #include "../utils/common_utils.h"
 #include "../uint_linked_list/uint_linked_list.h"
 
-inf_int::inf_int() {
+inf_int::inf_int() : sign(false){
 }
 
 inf_int::inf_int(const inf_int& other) {
