@@ -21,13 +21,13 @@ public:
     void insert(const int& index, const unsigned int& data);
     void remove(const int& index);
     void remove_leading_zeros();
-    
+
     int length() const;
     std::string to_bit_string() const;
-    
+
     static bool is_equal(const uint_linked_list& a, const uint_linked_list& b);
     static bool is_bitval_less_than(const uint_linked_list& a, const uint_linked_list& b);
-    
+
     unsigned int& operator[](const int& index);
     uint_linked_list& operator=(const uint_linked_list& other);
 };

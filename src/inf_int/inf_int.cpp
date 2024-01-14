@@ -33,7 +33,7 @@ inf_int::inf_int(const std::string& s) {
             cnt = 0;
         }
     }
-    
+
     digits.remove_leading_zeros();
 }
 
@@ -198,7 +198,7 @@ inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {
     }
 
     res.digits.remove_leading_zeros();
-    
+
     return res;
 }
 
