@@ -31,6 +31,8 @@ public:
     static bool is_equal(const inf_int& a, const inf_int& b);
     static bool is_less_than(const inf_int& a, const inf_int& b);
 
+    friend std::ostream& operator<<(std::ostream& output, const inf_int& num);
+
     ~inf_int();
 };
 
@@ -44,5 +46,6 @@ bool operator<(const inf_int& a, const inf_int& b);
 bool operator>(const inf_int& a, const inf_int& b);
 bool operator<=(const inf_int& a, const inf_int& b);
 bool operator>=(const inf_int& a, const inf_int& b);
+
 
 #endif // INF_INT_H

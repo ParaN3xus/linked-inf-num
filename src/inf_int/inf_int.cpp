@@ -2,6 +2,7 @@
 #include "inf_int.h"
 #include "../utils/common_utils.h"
 #include "../uint_linked_list/uint_linked_list.h"
+#include <ostream>
 
 inf_int::inf_int() : sign(false) {
 }
@@ -341,4 +342,9 @@ bool operator>(const inf_int& a, const inf_int& b) {
 
 bool operator>=(const inf_int& a, const inf_int& b) {
     return !(a < b);
+}
+
+std::ostream& operator<<(std::ostream& output, const inf_int& num) {
+    output << num.to_string(false);
+    return output;
 }
