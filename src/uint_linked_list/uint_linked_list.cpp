@@ -93,6 +93,10 @@ void uint_linked_list::remove_leading_zeros() {
     }
 }
 
+bool uint_linked_list::is_zero() const {
+    return head == nullptr;
+}
+
 int uint_linked_list::length() const {
     int count = 0;
     Node* current = head;

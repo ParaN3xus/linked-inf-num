@@ -35,10 +35,21 @@ inf_int::inf_int(const std::string& s) {
         }
     }
 
-    digits.remove_leading_zeros();
+    normalize();
 }
 
 inf_int::~inf_int() {
+}
+
+void inf_int::unify_zero_sign() {
+    if (digits.is_zero()) {
+        sign = false;
+    }
+}
+
+void inf_int::normalize() {
+    digits.remove_leading_zeros();
+    unify_zero_sign();
 }
 
 
@@ -61,7 +72,7 @@ std::string inf_int::to_string(const bool& comma = false) const {
         res = add_commas(res);
     }
 
-    if(sign) {
+    if (sign) {
         res = "-" + res;
     }
 
@@ -120,7 +131,7 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
         tmp.digits.insert(0, carry);
     }
 
-    tmp.digits.remove_leading_zeros();
+    tmp.normalize();
 
     return tmp;
 }
@@ -170,7 +181,7 @@ inf_int inf_int::abs_sub(const inf_int& l, const inf_int& r) {
         res.digits.insert(0, tmp);
     }
 
-    res.digits.remove_leading_zeros();
+    res.normalize();
 
     return res;
 }
@@ -202,7 +213,7 @@ inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {
         res.digits.insert(0, carry);
     }
 
-    res.digits.remove_leading_zeros();
+    res.normalize();
 
     return res;
 }
@@ -219,7 +230,7 @@ inf_int inf_int::abs_mul(const inf_int& x, const inf_int& y) {
         res = abs_add(res, tmp);
     }
 
-    res.digits.remove_leading_zeros();
+    res.normalize();
 
     return res;
 }
@@ -245,6 +256,8 @@ inf_int inf_int::add(const inf_int& a, const inf_int& b) {
     tmp = abs_add(a, b);
 
     tmp.sign = true;
+    tmp.unify_zero_sign();
+
     return tmp;
 }
 
@@ -264,12 +277,14 @@ inf_int inf_int::sub(const inf_int& a, const inf_int& b) {
     if (a.sign && !b.sign) {
         tmp = abs_add(a, b);
         tmp.sign = true;
+        tmp.unify_zero_sign();
         return tmp;
     }
 
     // - -
     tmp = abs_sub(a, b);
     tmp.sign = !tmp.sign;
+    tmp.unify_zero_sign();
     return tmp;
 }
 
@@ -283,11 +298,15 @@ inf_int inf_int::mul(const inf_int& a, const inf_int& b) {
     inf_int tmp;
     tmp = abs_mul(a, b);
     tmp.sign = true;
+    tmp.unify_zero_sign();
     return tmp;
 }
 
 
 bool inf_int::is_equal(const inf_int& a, const inf_int& b) {
+    if (a.digits.is_zero() && b.digits.is_zero())
+        return true;
+
     if (a.sign != b.sign)
         return false;
 

@@ -22,6 +22,7 @@ public:
     void remove(const int& index);
     void remove_leading_zeros();
 
+    bool is_zero() const;
     int length() const;
     std::string to_bit_string() const;
 

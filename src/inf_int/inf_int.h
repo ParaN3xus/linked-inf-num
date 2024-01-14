@@ -9,6 +9,9 @@ private:
     bool sign;
     uint_linked_list digits;
 
+    void unify_zero_sign();
+    void normalize();
+
     static inf_int abs_add(const inf_int& a, const inf_int& b);
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
     static inf_int abs_mul(const inf_int& a, const inf_int& b);
