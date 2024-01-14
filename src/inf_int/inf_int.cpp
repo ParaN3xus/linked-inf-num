@@ -3,7 +3,7 @@
 #include "../utils/common_utils.h"
 #include "../uint_linked_list/uint_linked_list.h"
 
-inf_int::inf_int() : sign(false){
+inf_int::inf_int() : sign(false) {
 }
 
 inf_int::inf_int(const inf_int& other) {
@@ -101,7 +101,7 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
     for (int i = len_y; i < len_x; ++i) {
         carry = is_add_overflow(x->digits[len_x - i - 1], last_carry);
         t = (unsigned long long)x->digits[len_x - i - 1] + last_carry;
-        if(carry) {
+        if (carry) {
             t -= UINT_MAX + 1;
         }
 
@@ -166,8 +166,7 @@ inf_int inf_int::abs_sub(const inf_int& l, const inf_int& r) {
 
 void inf_int::lshift32(const unsigned int& a) {
     int len = digits.length();
-    for(int i = 0; i < a; ++i)
-    {
+    for (int i = 0; i < a; ++i) {
         digits.insert(len, 0);
         ++len;
     }
@@ -184,7 +183,7 @@ inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {
     for (int i = a.digits.length() - 1; i >= 0; --i) {
         tmp = (unsigned long long)a.digits[i] * (unsigned long long)b + (unsigned long long)carry;
         carry = (unsigned int)(tmp >> INF_INT_DIGIT_SIZE);  // /
-        unsigned int t= tmp & (unsigned long long)UINT_MAX;
+        unsigned int t = tmp & (unsigned long long)UINT_MAX;
         res.digits.insert(0, t);               // %
     }
 
@@ -192,7 +191,7 @@ inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {
         res.digits.insert(0, carry);
     }
 
-    return res;    
+    return res;
 }
 
 inf_int inf_int::abs_mul(const inf_int& x, const inf_int& y) {
