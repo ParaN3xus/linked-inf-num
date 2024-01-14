@@ -61,6 +61,10 @@ std::string inf_int::to_string(const bool& comma = false) const {
         res = add_commas(res);
     }
 
+    if(sign) {
+        res = "-" + res;
+    }
+
     return res;
 }
 
