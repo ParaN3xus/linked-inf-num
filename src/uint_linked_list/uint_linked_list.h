@@ -3,13 +3,13 @@
 
 class uint_linked_list {
 private:
-    struct Node {
+    struct node {
         unsigned int data;
-        Node* next;
+        node* next;
     };
 
-    Node* head;
-    Node* current = nullptr;
+    node* head;
+    node* current = nullptr;
     int current_index = -1;
 
 public:

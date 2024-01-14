@@ -9,7 +9,7 @@ uint_linked_list::uint_linked_list() : head(nullptr) {}
 uint_linked_list::uint_linked_list(const uint_linked_list& other) {
     head = nullptr;
 
-    Node* cur = other.head;
+    node* cur = other.head;
     while (cur != nullptr) {
         append(cur->data);
         cur = cur->next;
@@ -18,7 +18,7 @@ uint_linked_list::uint_linked_list(const uint_linked_list& other) {
 
 uint_linked_list::~uint_linked_list() {
     while (head != nullptr) {
-        Node* temp = head;
+        node* temp = head;
         head = head->next;
         delete temp;
     }
@@ -26,12 +26,12 @@ uint_linked_list::~uint_linked_list() {
 }
 
 void uint_linked_list::append(const unsigned int& data) {
-    Node* newNode = new Node{ data, nullptr };
+    node* newNode = new node{ data, nullptr };
     if (head == nullptr) {
         head = newNode;
     }
     else {
-        Node* current = head;
+        node* current = head;
         while (current->next != nullptr) {
             current = current->next;
         }
@@ -42,13 +42,13 @@ void uint_linked_list::append(const unsigned int& data) {
 // insert before the index, new elem will become new elem on index
 void uint_linked_list::insert(const int& index, const unsigned int& data) {
     if (index < 0) return;
-    Node* newNode = new Node{ data, nullptr };
+    node* newNode = new node{ data, nullptr };
     if (index == 0) {
         newNode->next = head;
         head = newNode;
     }
     else {
-        Node* current = head;
+        node* current = head;
         for (int i = 0; i < index - 1 && current != nullptr; i++) {
             current = current->next;
         }
@@ -65,13 +65,13 @@ void uint_linked_list::remove(const int& index) {
     }
 
     if (index == 0) {
-        Node* temp = head;
+        node* temp = head;
         head = head->next;
         delete temp;
     }
     else {
-        Node* prev = nullptr;
-        Node* current = head;
+        node* prev = nullptr;
+        node* current = head;
         int i = 0;
 
         while (current != nullptr && i < index) {
@@ -99,7 +99,7 @@ bool uint_linked_list::is_zero() const {
 
 int uint_linked_list::length() const {
     int count = 0;
-    Node* current = head;
+    node* current = head;
     while (current != nullptr) {
         count++;
         current = current->next;
@@ -110,7 +110,7 @@ int uint_linked_list::length() const {
 std::string uint_linked_list::to_bit_string() const {
     std::string res = "";
 
-    Node* current = head;
+    node* current = head;
     while (current != nullptr) {
         res = res + std::bitset<INF_INT_DIGIT_SIZE>(current->data).to_string();
         current = current->next;
@@ -119,8 +119,8 @@ std::string uint_linked_list::to_bit_string() const {
 }
 
 bool uint_linked_list::is_equal(const uint_linked_list& a, const uint_linked_list& b) {
-    Node* cur_a = a.head;
-    Node* cur_b = b.head;
+    node* cur_a = a.head;
+    node* cur_b = b.head;
     while (cur_a != nullptr && cur_b != nullptr) {
         if (cur_a->data != cur_b->data) {
             return false;
@@ -136,8 +136,8 @@ bool uint_linked_list::is_bitval_less_than(const uint_linked_list& a, const uint
         return a.length() < b.length();
     }
 
-    Node* cur_a = a.head;
-    Node* cur_b = b.head;
+    node* cur_a = a.head;
+    node* cur_b = b.head;
 
     while (cur_a != nullptr && cur_b != nullptr) {
         if (cur_a->data < cur_b->data) {
@@ -162,7 +162,7 @@ unsigned int& uint_linked_list::operator[](const int& index) {
         return current->data;
     }
 
-    Node* tmp = head;
+    node* tmp = head;
     for (int i = 0; i < index && tmp != nullptr; i++) {
         tmp = tmp->next;
     }
