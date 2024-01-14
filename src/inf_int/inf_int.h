@@ -11,6 +11,8 @@ private:
 
     static inf_int abs_add(const inf_int& a, const inf_int& b);
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
+    static inf_int abs_mul(const inf_int& a, const inf_int& b);
+    static inf_int abs_mul(const inf_int& a, const unsigned int& b);
     static bool is_abs_less_than(const inf_int& a, const inf_int& b);
 
 public:
@@ -21,8 +23,11 @@ public:
     bool is_positive() const;
     std::string to_string(const bool& comma) const;
 
+    void lshift32(const unsigned int& a);
+
     static inf_int add(const inf_int& a, const inf_int& b);
     static inf_int sub(const inf_int& a, const inf_int& b);
+    static inf_int mul(const inf_int& a, const inf_int& b);
     static bool is_equal(const inf_int& a, const inf_int& b);
     static bool is_less_than(const inf_int& a, const inf_int& b);
 

@@ -70,9 +70,18 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
     int len_b = b.digits.length();
 
     bool carry = false;
+    bool last_carry = false;
+    unsigned long long t;
     for (int i = 0; i < std::min(len_a, len_b); ++i) {
-        carry = is_add_overflow(a.digits[len_a - i - 1], b.digits[len_b - i - 1], carry);
-        tmp.digits.insert(0, a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + carry);
+        carry = is_add_overflow(a.digits[len_a - i - 1], b.digits[len_b - i - 1], last_carry);
+        if (carry) {
+            t = (unsigned long long)a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + last_carry - UINT_MAX - 1;
+        }
+        else {
+            t = (unsigned long long)a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + last_carry;
+        }
+        last_carry = carry;
+        tmp.digits.insert(0, t);
     }
 
     inf_int* x, * y;
@@ -92,8 +101,20 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
     }
 
     for (int i = len_y; i < len_x; ++i) {
-        tmp.digits.insert(0, x->digits[len_x - i - 1] + carry);
-        carry = is_add_overflow(x->digits[len_x - i - 1], carry);
+        carry = is_add_overflow(x->digits[len_x - i - 1], last_carry);
+        if(carry) {
+            t = (unsigned long long)x->digits[len_x - i - 1] + last_carry - UINT_MAX;
+        }
+        else {
+            t = (unsigned long long)x->digits[len_x - i - 1] + last_carry;
+        }
+
+        last_carry = carry;
+        tmp.digits.insert(0, t);
+    }
+
+    if (carry != 0) {
+        tmp.digits.insert(0, carry);
     }
 
     return tmp;
@@ -147,9 +168,53 @@ inf_int inf_int::abs_sub(const inf_int& l, const inf_int& r) {
     return res;
 }
 
-inf_int inf_int::add(const inf_int& a, const inf_int& b) {
+void inf_int::lshift32(const unsigned int& a) {
+    int len = digits.length();
+    for(int i = 0; i < a; ++i)
+    {
+        digits.insert(len, 0);
+        ++len;
+    }
+}
+
+inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {
+    inf_int res, a = x;
+    unsigned long long tmp = 0;
+    unsigned int carry = 0;
+
+    // a * b          + carry
+    // ((2^32 - 1)^2) + (((2^32 - 1)^2)/2^32) < 2^64
+
+    for (int i = a.digits.length() - 1; i >= 0; --i) {
+        tmp = (unsigned long long)a.digits[i] * (unsigned long long)b + (unsigned long long)carry;
+        carry = (unsigned int)(tmp >> INF_INT_DIGIT_SIZE);  // /
+        unsigned int t= tmp & (unsigned long long)UINT_MAX;
+        res.digits.insert(0, t);               // %
+    }
+
+    if (carry != 0) {
+        res.digits.insert(0, carry);
+    }
+
+    return res;    
+}
+
+inf_int inf_int::abs_mul(const inf_int& x, const inf_int& y) {
+    inf_int res, a = x, b = y;
     inf_int tmp;
 
+    int len_b = b.digits.length();
+
+    for (int i = len_b - 1; i >= 0; --i) {
+        tmp = abs_mul(a, b.digits[i]);
+        tmp.lshift32(len_b - i - 1);
+        res = abs_add(res, tmp);
+    }
+
+    return res;
+}
+
+inf_int inf_int::add(const inf_int& a, const inf_int& b) {
     // + +
     if (!a.sign && !b.sign) {
         return abs_add(a, b);
@@ -166,6 +231,7 @@ inf_int inf_int::add(const inf_int& a, const inf_int& b) {
     }
 
     // - -
+    inf_int tmp;
     tmp = a + b;
 
     tmp.sign = true;
@@ -173,8 +239,6 @@ inf_int inf_int::add(const inf_int& a, const inf_int& b) {
 }
 
 inf_int inf_int::sub(const inf_int& a, const inf_int& b) {
-    inf_int tmp;
-
     // + +
     if (!a.sign && !b.sign) {
         return abs_sub(a, b);
@@ -185,6 +249,7 @@ inf_int inf_int::sub(const inf_int& a, const inf_int& b) {
         return abs_add(a, b);
     }
 
+    inf_int tmp;
     // - +
     if (a.sign && !b.sign) {
         tmp = abs_add(a, b);
@@ -197,6 +262,20 @@ inf_int inf_int::sub(const inf_int& a, const inf_int& b) {
     tmp.sign = true;
     return tmp;
 }
+
+inf_int inf_int::mul(const inf_int& a, const inf_int& b) {
+    // + + or - -
+    if (a.sign == b.sign) {
+        return abs_mul(a, b);
+    }
+
+    // + - or - +
+    inf_int tmp;
+    tmp = abs_mul(a, b);
+    tmp.sign = true;
+    return tmp;
+}
+
 
 bool inf_int::is_equal(const inf_int& a, const inf_int& b) {
     if (a.sign != b.sign)
