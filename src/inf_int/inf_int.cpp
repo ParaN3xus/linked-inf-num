@@ -74,11 +74,9 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
     unsigned long long t;
     for (int i = 0; i < std::min(len_a, len_b); ++i) {
         carry = is_add_overflow(a.digits[len_a - i - 1], b.digits[len_b - i - 1], last_carry);
+        t = (unsigned long long)a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + last_carry;
         if (carry) {
-            t = (unsigned long long)a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + last_carry - UINT_MAX - 1;
-        }
-        else {
-            t = (unsigned long long)a.digits[len_a - i - 1] + b.digits[len_b - i - 1] + last_carry;
+            t -= UINT_MAX + 1;
         }
         last_carry = carry;
         tmp.digits.insert(0, t);
@@ -102,11 +100,9 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
 
     for (int i = len_y; i < len_x; ++i) {
         carry = is_add_overflow(x->digits[len_x - i - 1], last_carry);
+        t = (unsigned long long)x->digits[len_x - i - 1] + last_carry;
         if(carry) {
-            t = (unsigned long long)x->digits[len_x - i - 1] + last_carry - UINT_MAX - 1;
-        }
-        else {
-            t = (unsigned long long)x->digits[len_x - i - 1] + last_carry;
+            t -= UINT_MAX + 1;
         }
 
         last_carry = carry;
