@@ -103,7 +103,7 @@ inf_int inf_int::abs_add(const inf_int& l, const inf_int& r) {
     for (int i = len_y; i < len_x; ++i) {
         carry = is_add_overflow(x->digits[len_x - i - 1], last_carry);
         if(carry) {
-            t = (unsigned long long)x->digits[len_x - i - 1] + last_carry - UINT_MAX;
+            t = (unsigned long long)x->digits[len_x - i - 1] + last_carry - UINT_MAX - 1;
         }
         else {
             t = (unsigned long long)x->digits[len_x - i - 1] + last_carry;
