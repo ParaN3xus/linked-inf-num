@@ -310,6 +310,10 @@ inf_int operator-(const inf_int& a, const inf_int& b) {
     return inf_int::sub(a, b);
 }
 
+inf_int operator*(const inf_int& a, const inf_int& b) {
+    return inf_int::mul(a, b);
+}
+
 bool operator==(const inf_int& a, const inf_int& b) {
     return inf_int::is_equal(a, b);
 }

@@ -36,6 +36,7 @@ public:
 
 inf_int operator-(const inf_int& a, const inf_int& b);
 inf_int operator+(const inf_int& a, const inf_int& b);
+inf_int operator*(const inf_int& a, const inf_int& b);
 
 
 bool operator==(const inf_int& a, const inf_int& b);
