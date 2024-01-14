@@ -237,7 +237,7 @@ inf_int inf_int::add(const inf_int& a, const inf_int& b) {
 
     // - -
     inf_int tmp;
-    tmp = a + b;
+    tmp = abs_add(a, b);
 
     tmp.sign = true;
     return tmp;
@@ -264,7 +264,7 @@ inf_int inf_int::sub(const inf_int& a, const inf_int& b) {
 
     // - -
     tmp = abs_sub(a, b);
-    tmp.sign = true;
+    tmp.sign = !tmp.sign;
     return tmp;
 }
 
