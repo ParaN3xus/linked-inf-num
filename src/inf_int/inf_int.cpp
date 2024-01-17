@@ -25,7 +25,7 @@ inf_int::inf_int(const std::string& s) {
     digits.append(0);
 
     int cnt = 0;
-    std::string binary = inf_num_str2bin_str(num);
+    std::string binary = inf_int_str2bin_str(num);
     for (int i = binary.size() - 1; i >= 0; --i) {
         digits[0] += (binary[i] - '0') << cnt;
         cnt++;
@@ -34,6 +34,21 @@ inf_int::inf_int(const std::string& s) {
             cnt = 0;
         }
     }
+
+    normalize();
+}
+
+inf_int::inf_int(const int& n) {
+    int num = n;
+    if (num < 0) {
+        num = -num;
+        sign = true;
+    }
+    else {
+        sign = false;
+    }
+
+    digits.append(num);
 
     normalize();
 }
@@ -50,11 +65,6 @@ void inf_int::unify_zero_sign() {
 void inf_int::normalize() {
     digits.remove_leading_zeros();
     unify_zero_sign();
-}
-
-
-bool inf_int::is_positive() const {
-    return !sign;
 }
 
 std::string inf_int::to_string(const bool& comma = false) const {
@@ -192,6 +202,11 @@ void inf_int::lshift32(const unsigned int& a) {
         digits.insert(len, 0);
         ++len;
     }
+}
+
+void inf_int::negate() {
+    if (!digits.is_zero())
+        sign = !sign;
 }
 
 inf_int inf_int::abs_mul(const inf_int& x, const unsigned int& b) {

@@ -3,7 +3,8 @@
 
 #include<string>
 
-std::string inf_num_str2bin_str(std::string num);
+std::string inf_int_str2bin_str(const std::string& num);
+std::string inf_frac_str2bin_str(const std::string& num, const int& bits);
 
 bool is_add_overflow(unsigned int a, unsigned int b, bool carry);
 bool is_add_overflow(unsigned int a, unsigned int b);
@@ -14,6 +15,7 @@ bool is_sub_overflow(unsigned int a, bool borrow);
 
 std::string binstr_mut2(const std::string& num);
 std::string binstr_add1(const std::string& num);
+std::string decstr_div2(const std::string& decimal);
 
 std::string add_commas(const std::string& input);
 

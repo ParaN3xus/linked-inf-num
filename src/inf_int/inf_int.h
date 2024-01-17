@@ -6,9 +6,6 @@
 
 class inf_int {
 private:
-    bool sign;
-    uint_linked_list digits;
-
     void unify_zero_sign();
     void normalize();
 
@@ -19,14 +16,18 @@ private:
     static bool is_abs_less_than(const inf_int& a, const inf_int& b);
 
 public:
+    bool sign;
+    uint_linked_list digits;
+
     inf_int();
     inf_int(const inf_int& other);
+    inf_int(const int& num);
     inf_int(const std::string& num);
 
-    bool is_positive() const;
     std::string to_string(const bool& comma) const;
 
     void lshift32(const unsigned int& a);
+    void negate();
 
     static inf_int add(const inf_int& a, const inf_int& b);
     static inf_int sub(const inf_int& a, const inf_int& b);
