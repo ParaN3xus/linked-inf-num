@@ -202,6 +202,7 @@ void inf_int::lshift32(const unsigned int& a) {
         digits.insert(len, 0);
         ++len;
     }
+    normalize();
 }
 
 void inf_int::negate() {

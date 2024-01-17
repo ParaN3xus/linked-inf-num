@@ -6,8 +6,6 @@
 
 class inf_int {
 private:
-    void unify_zero_sign();
-    void normalize();
 
     static inf_int abs_add(const inf_int& a, const inf_int& b);
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
@@ -27,6 +25,8 @@ public:
     std::string to_string(const bool& comma) const;
 
     void lshift32(const unsigned int& a);
+    void normalize();
+    void unify_zero_sign();
     void negate();
 
     static inf_int add(const inf_int& a, const inf_int& b);

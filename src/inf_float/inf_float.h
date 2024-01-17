@@ -8,6 +8,9 @@ private:
     inf_int mantissa;
     int exponent;
 
+    void unify_zero_sign();
+    void normalize();
+
     static inf_float abs_add(const inf_float& a, const inf_float& b);
     static inf_float abs_sub(const inf_float& a, const inf_float& b);
     static inf_float abs_mul(const inf_float& a, const inf_float& b);

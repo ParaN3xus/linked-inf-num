@@ -52,6 +52,22 @@ inf_float::inf_float(const std::string& n, const int& precision = 2) {
     this->exponent = -frac_bin.length() / 32;
 }
 
+inf_float::~inf_float() {
+}
+
+void inf_float::unify_zero_sign() {
+    mantissa.unify_zero_sign();
+}
+
+void inf_float::normalize() {
+    mantissa.normalize();
+
+    if (exponent > 0) {
+        mantissa.lshift32(exponent);
+        exponent = 0;
+    }
+}
+
 std::string inf_float::to_string(const bool& comma) const {
     std::string all = mantissa.digits.to_bit_string();
     std::string int_part_bin;
@@ -92,9 +108,180 @@ std::string inf_float::to_string(const bool& comma) const {
         frac_part = decstr_div2(frac_part);
     }
 
-    if(frac_part == "0") {
+    if (frac_part == "0") {
         return int_part;
     }
-    
+
     return int_part + frac_part.substr(1, frac_part.length() - 1);
+}
+
+inf_float inf_float::abs_add(const inf_float& a, const inf_float& b) {
+    inf_float x, y, ans;
+    //x: bigger exponent
+    if (a.exponent > b.exponent) {
+        x = a;
+        y = b;
+    }
+    else {
+        x = b;
+        y = a;
+    }
+
+    x.mantissa.lshift32(x.exponent - y.exponent);
+    //x.exponent = y.exponent;
+
+    ans.exponent = y.exponent;
+    ans.mantissa = x.mantissa + y.mantissa;
+
+    ans.normalize();
+
+    return ans;
+}
+
+inf_float inf_float::abs_sub(const inf_float& a, const inf_float& b) {
+    inf_float x, y, ans;
+    //x: bigger exponent
+    if (a.exponent > b.exponent) {
+        x = a;
+        y = b;
+    }
+    else {
+        x = b;
+        y = a;
+    }
+
+    x.mantissa.lshift32(x.exponent - y.exponent);
+    //x.exponent = y.exponent;
+
+    ans.exponent = y.exponent;
+    ans.mantissa = x.mantissa - y.mantissa;
+
+    ans.normalize();
+
+    return ans;
+}
+
+bool inf_float::is_abs_less_than(const inf_float& a, const inf_float& b) {
+    inf_float x, y;
+    //x: bigger exponent
+    if (a.exponent > b.exponent) {
+        x = a;
+        y = b;
+    }
+    else {
+        x = b;
+        y = a;
+    }
+
+    x.mantissa.lshift32(x.exponent - y.exponent);
+    //x.exponent = y.exponent;
+
+    return x.mantissa < y.mantissa;
+}
+
+
+inf_float inf_float::add(const inf_float& a, const inf_float& b) {
+    // + +
+    if (!a.mantissa.sign && !b.mantissa.sign) {
+        return abs_add(a, b);
+    }
+
+    // + -
+    if (!a.mantissa.sign && b.mantissa.sign) {
+        return abs_sub(a, b);
+    }
+
+    // - +
+    if (a.mantissa.sign && !b.mantissa.sign) {
+        return abs_sub(b, a);
+    }
+
+    // - -
+    inf_float tmp;
+    tmp = abs_add(a, b);
+
+    tmp.mantissa.sign = true;
+    tmp.unify_zero_sign();
+
+    return tmp;
+}
+
+inf_float inf_float::sub(const inf_float& a, const inf_float& b) {
+    // + +
+    if (!a.mantissa.sign && !b.mantissa.sign) {
+        return abs_sub(a, b);
+    }
+
+    // + -
+    if (!a.mantissa.sign && b.mantissa.sign) {
+        return abs_add(a, b);
+    }
+
+    inf_float tmp;
+    // - +
+    if (a.mantissa.sign && !b.mantissa.sign) {
+        tmp = abs_add(a, b);
+        tmp.mantissa.sign = true;
+        tmp.unify_zero_sign();
+        return tmp;
+    }
+
+    // - -
+    tmp = abs_sub(a, b);
+    tmp.mantissa.sign = !tmp.mantissa.sign;
+    tmp.unify_zero_sign();
+    return tmp;
+}
+
+inf_float inf_float::mul(const inf_float& a, const inf_float& b) {
+    // + + or - -
+    if (a.mantissa.sign == b.mantissa.sign) {
+        return abs_mul(a, b);
+    }
+
+    // + - or - +
+    inf_float tmp;
+    tmp = abs_mul(a, b);
+    tmp.mantissa.sign = true;
+    tmp.unify_zero_sign();
+    return tmp;
+}
+
+bool inf_float::is_equal(const inf_float& a, const inf_float& b) {
+    if (a.mantissa.sign != b.mantissa.sign) {
+        return false;
+    }
+
+    inf_float x, y, ans;
+    //x: bigger exponent
+    if (a.exponent > b.exponent) {
+        x = a;
+        y = b;
+    }
+    else {
+        x = b;
+        y = a;
+    }
+
+    x.mantissa.lshift32(x.exponent - y.exponent);
+    //x.exponent = y.exponent;
+
+    return x.mantissa == y.mantissa;
+}
+
+bool inf_float::is_less_than(const inf_float& a, const inf_float& b) {
+    // + -
+    if (!a.mantissa.sign && b.mantissa.sign)
+        return false;
+
+    // - +
+    if (a.mantissa.sign && !b.mantissa.sign)
+        return true;
+
+    // - -
+    if (a.mantissa.sign && b.mantissa.sign)
+        return !is_abs_less_than(a, b);
+
+    // + +
+    return is_abs_less_than(a, b);
 }
