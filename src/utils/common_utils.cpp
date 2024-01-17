@@ -29,7 +29,7 @@ std::string inf_frac_str2bin_str(const std::string& frac, const int& bits) {
     int times = 0;
 
     while (num != "") {
-        if (times >= 32)
+        if (times >= bits)
             goto INF_FRAC_STR2BIN_STR_END;
 
         int carry = 0;
