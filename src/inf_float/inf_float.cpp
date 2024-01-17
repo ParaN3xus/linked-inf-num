@@ -12,7 +12,7 @@ inf_float::inf_float(const inf_float& other) {
 }
 
 // precision in 43e base n is equivalent to precision in 10 base 32lg2 * n
-inf_float::inf_float(const std::string& n, const int& precision = 2) {
+inf_float::inf_float(const std::string& n, const int& precision) {
     std::string num = n;
     std::string int_part;
     std::string frac_part;
@@ -68,7 +68,7 @@ void inf_float::normalize() {
     }
 }
 
-std::string inf_float::to_string(const bool& comma) const {
+std::string inf_float::to_string(const bool& comma = false) const {
     std::string all = mantissa.digits.to_bit_string();
     std::string int_part_bin;
     std::string frac_part_bin;
@@ -233,6 +233,7 @@ inf_float inf_float::sub(const inf_float& a, const inf_float& b) {
     return tmp;
 }
 
+/*
 inf_float inf_float::mul(const inf_float& a, const inf_float& b) {
     // + + or - -
     if (a.mantissa.sign == b.mantissa.sign) {
@@ -246,6 +247,7 @@ inf_float inf_float::mul(const inf_float& a, const inf_float& b) {
     tmp.unify_zero_sign();
     return tmp;
 }
+*/
 
 bool inf_float::is_equal(const inf_float& a, const inf_float& b) {
     if (a.mantissa.sign != b.mantissa.sign) {

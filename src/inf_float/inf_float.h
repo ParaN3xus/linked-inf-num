@@ -19,7 +19,7 @@ private:
 public:
     inf_float();
     inf_float(const inf_float& other);
-    inf_float(const std::string& num, const int& precisionZ);
+    inf_float(const std::string& num, const int& precision);
 
     std::string to_string(const bool& comma) const;
 
