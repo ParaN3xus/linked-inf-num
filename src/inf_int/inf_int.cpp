@@ -251,6 +251,87 @@ inf_int inf_int::abs_mul(const inf_int& x, const inf_int& y) {
     return res;
 }
 
+// a / b
+inf_int inf_int::abs_div(const inf_int& a, const inf_int& b, inf_int& remainder) {
+    if (b.digits.is_zero()) {
+        throw std::runtime_error("Division by zero");
+    }
+
+    if (a.digits.is_zero() || is_abs_less_than(a, b)) {
+        remainder = inf_int(0);
+        return inf_int(0);
+    }
+
+    if (uint_linked_list::is_equal(a.digits, b.digits)) {
+        return inf_int(1);
+    }
+
+    // a > b, a, b != 0
+
+    remainder = a;
+    inf_int res;
+    int len_a = a.digits.length();
+    int len_b = b.digits.length();
+
+    for (int i = len_b - 1; i < len_a; ++i) {
+        inf_int tmp = b;
+        tmp.lshift32(len_a - i - 1);
+        if (uint_linked_list::is_bitval_less_than(remainder.digits, tmp.digits)) {
+            res.digits.append(0);
+            continue;
+        }
+
+        int d = tmp.digits.get_first_one_pos() - remainder.digits.get_first_one_pos() + 32 * (remainder.digits.length() - tmp.digits.length());
+        unsigned int upper = leftshift_1fixed(1, (d > 31 ? 31 : d)), lower = 1 << (d - 1 < 0 ? 0 : d - 1);
+        unsigned int mid;
+
+        while (true) {
+            mid = ((int64_t)lower + (int64_t)upper) / 2; // to prevent overflow
+
+            inf_int minuend = abs_mul(tmp, mid);
+            inf_int over_minuend = abs_add(tmp, minuend);
+
+            bool min_less_than_remainder = uint_linked_list::is_bitval_less_than(minuend.digits, remainder.digits);
+            bool over_min_less_than_remainder = uint_linked_list::is_bitval_less_than(over_minuend.digits, remainder.digits);
+
+
+            /*
+            ---------------------->
+                     |(rem)            bool_o bool_m
+            |(m) |(om)                  1       1
+                |    |                  0       1
+                   |    |               0       1
+                     |    |             0       0
+                        |    |          0       0
+            */
+
+            if (over_min_less_than_remainder && min_less_than_remainder) {
+                lower = mid;
+                continue;
+            }
+            if (!over_min_less_than_remainder && min_less_than_remainder) {
+                if (uint_linked_list::is_equal(over_minuend.digits, remainder.digits)) {
+                    lower = mid;
+                    continue;
+                }
+                break;
+            }
+            if (!over_min_less_than_remainder && !min_less_than_remainder) {
+                if (uint_linked_list::is_equal(minuend.digits, remainder.digits)) {
+                    break;
+                }
+                upper = mid;
+            }
+        }
+
+        res.digits.append(mid);
+        remainder = abs_sub(remainder, abs_mul(tmp, mid));
+    }
+
+    return res;
+}
+
+
 inf_int inf_int::add(const inf_int& a, const inf_int& b) {
     // + +
     if (!a.sign && !b.sign) {
@@ -318,6 +399,22 @@ inf_int inf_int::mul(const inf_int& a, const inf_int& b) {
     return tmp;
 }
 
+inf_int inf_int::div(const inf_int& a, const inf_int& b) {
+    inf_int remainder;
+
+    // + + or - -
+    if (a.sign == b.sign) {
+        return abs_div(a, b, remainder);
+    }
+
+    // + - or - +
+    inf_int tmp;
+    tmp = abs_div(a, b, remainder);
+    tmp.sign = true;
+    tmp.unify_zero_sign();
+    return tmp;
+}
+
 
 bool inf_int::is_equal(const inf_int& a, const inf_int& b) {
     if (a.digits.is_zero() && b.digits.is_zero())
@@ -361,6 +458,10 @@ inf_int operator-(const inf_int& a, const inf_int& b) {
 
 inf_int operator*(const inf_int& a, const inf_int& b) {
     return inf_int::mul(a, b);
+}
+
+inf_int operator/(const inf_int& a, const inf_int& b) {
+    return inf_int::div(a, b);
 }
 
 bool operator==(const inf_int& a, const inf_int& b) {

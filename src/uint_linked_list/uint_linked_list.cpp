@@ -107,6 +107,24 @@ int uint_linked_list::length() const {
     return count;
 }
 
+int uint_linked_list::get_first_one_pos() const {
+    int pos = 0;
+    node* current = head;
+    while (current != nullptr) {
+        if (current->data != 0) {
+            for (int i = 31; i >= 0; --i) {
+                if (current->data & (1 << i)) {
+                    return pos + 31 - i;
+                }
+            }
+        }
+        pos += 32;
+        current = current->next;
+    }
+    return -1;
+}
+
+
 std::string uint_linked_list::to_bit_string() const {
     std::string res = "";
 

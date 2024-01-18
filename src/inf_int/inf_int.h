@@ -11,6 +11,7 @@ private:
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
     static inf_int abs_mul(const inf_int& a, const inf_int& b);
     static inf_int abs_mul(const inf_int& a, const unsigned int& b);
+    static inf_int abs_div(const inf_int& a, const inf_int& b, inf_int& remainder);
     static bool is_abs_less_than(const inf_int& a, const inf_int& b);
 
 public:
@@ -32,6 +33,7 @@ public:
     static inf_int add(const inf_int& a, const inf_int& b);
     static inf_int sub(const inf_int& a, const inf_int& b);
     static inf_int mul(const inf_int& a, const inf_int& b);
+    static inf_int div(const inf_int& a, const inf_int& b);
     static bool is_equal(const inf_int& a, const inf_int& b);
     static bool is_less_than(const inf_int& a, const inf_int& b);
 
@@ -43,6 +45,7 @@ public:
 inf_int operator-(const inf_int& a, const inf_int& b);
 inf_int operator+(const inf_int& a, const inf_int& b);
 inf_int operator*(const inf_int& a, const inf_int& b);
+inf_int operator/(const inf_int& a, const inf_int& b);
 
 
 bool operator==(const inf_int& a, const inf_int& b);

@@ -19,6 +19,8 @@ std::string decstr_div2(const std::string& decimal);
 
 std::string add_commas(const std::string& input);
 
+unsigned int leftshift_1fixed(unsigned int a, unsigned int b);
+
 const int INF_INT_DIGIT_SIZE = 32;
 #define UINT_MAX UINT32_MAX
 

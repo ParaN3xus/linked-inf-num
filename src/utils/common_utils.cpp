@@ -189,3 +189,7 @@ std::string add_commas(const std::string& input) {
 
     return ints + ((point == std::string::npos) ? ("") : ("." + decs));
 }
+
+unsigned int leftshift_1fixed(unsigned int num, unsigned int bits) {
+    return (num << bits) | ((1 << bits) - 1);
+}
