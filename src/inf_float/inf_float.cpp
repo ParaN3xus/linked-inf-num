@@ -1,6 +1,6 @@
+#include <stdexcept>
 #include "inf_float.h"
 #include "../utils/common_utils.h"
-#include <stdexcept>
 
 inf_float::inf_float() {
     this->mantissa = inf_int();
@@ -36,6 +36,10 @@ inf_float::inf_float(const std::string& n, const int& precision) {
     frac_part = num.substr(dot_pos + 1, num.length() - dot_pos - 1);
 
     this->mantissa = inf_int(int_part);
+    if(is_negative) {
+        this->mantissa.sign = true;
+    }
+
     len = this->mantissa.digits.length();
 
     frac_bin = inf_frac_str2bin_str(frac_part, precision * 32);
@@ -62,6 +66,11 @@ void inf_float::unify_zero_sign() {
 
 void inf_float::normalize() {
     mantissa.normalize();
+
+    if (mantissa.digits.length() == 0) {
+        exponent = 0;
+        return;
+    }
 
     int trailing_zeros = mantissa.digits.count_trailing_zeros();
 
@@ -143,10 +152,11 @@ std::string inf_float::to_string(const bool& comma, const int& dec_place, const 
 
     switch (rounding_style) {
     case ROUND_TOWARD_ZERO:
+        raw_str = raw_str.substr(0, 1 + dot_pos + dec_place);
         if (comma) {
             raw_str = add_commas(raw_str);
         }
-        return raw_str.substr(0, 1 + dot_pos + dec_place);
+        return raw_str;
         break;
 
     case ROUND_DOWN:
@@ -205,7 +215,7 @@ inf_float inf_float::abs_add(const inf_float& a, const inf_float& b) {
     //x.exponent = y.exponent;
 
     ans.exponent = y.exponent;
-    ans.mantissa = x.mantissa + y.mantissa;
+    ans.mantissa = inf_int::abs_add(x.mantissa, y.mantissa);
 
     ans.normalize();
 
@@ -213,42 +223,19 @@ inf_float inf_float::abs_add(const inf_float& a, const inf_float& b) {
 }
 
 inf_float inf_float::abs_sub(const inf_float& a, const inf_float& b) {
-    inf_float x, y, ans;
-    //x: bigger exponent
-    if (a.exponent > b.exponent) {
-        x = a;
-        y = b;
+    inf_float x = a, y = b, ans;
+    bool x_exponent_bigger = x.exponent > y.exponent;
+
+    if(x_exponent_bigger) {
+        x.mantissa.lshift32(x.exponent - y.exponent);
+        ans.exponent = y.exponent;
     }
     else {
-        x = b;
-        y = a;
+        y.mantissa.lshift32(y.exponent - x.exponent);
+        ans.exponent = x.exponent;
     }
 
-    x.mantissa.lshift32(x.exponent - y.exponent);
-    //x.exponent = y.exponent;
-
-    ans.exponent = y.exponent;
-    ans.mantissa = x.mantissa - y.mantissa;
-
-    ans.normalize();
-
-    return ans;
-}
-
-inf_float inf_float::abs_mul(const inf_float& a, const inf_float& b) {
-    inf_float ans;
-    ans.exponent = a.exponent + b.exponent;
-    ans.mantissa = a.mantissa * b.mantissa;
-
-    ans.normalize();
-
-    return ans;
-}
-
-inf_float inf_float::abs_div(const inf_float& a, const inf_float& b) {
-    inf_float ans;
-    ans.exponent = a.exponent - b.exponent;
-    ans.mantissa = a.mantissa / b.mantissa;
+    ans.mantissa = inf_int::abs_sub(x.mantissa, y.mantissa);
 
     ans.normalize();
 
@@ -372,31 +359,23 @@ inf_float inf_float::sub(const inf_float& a, const inf_float& b) {
 }
 
 inf_float inf_float::mul(const inf_float& a, const inf_float& b) {
-    // + + or - -
-    if (a.mantissa.sign == b.mantissa.sign) {
-        return abs_mul(a, b);
-    }
+    inf_float ans;
+    ans.exponent = a.exponent + b.exponent;
+    ans.mantissa = a.mantissa * b.mantissa;
 
-    // + - or - +
-    inf_float tmp;
-    tmp = abs_mul(a, b);
-    tmp.mantissa.sign = true;
-    tmp.unify_zero_sign();
-    return tmp;
+    ans.normalize();
+
+    return ans;
 }
 
 inf_float inf_float::div(const inf_float& a, const inf_float& b) {
-    // + + or - -
-    if (a.mantissa.sign == b.mantissa.sign) {
-        return abs_div(a, b);
-    }
+    inf_float ans;
+    ans.exponent = a.exponent - b.exponent;
+    ans.mantissa = a.mantissa / b.mantissa;
 
-    // + - or - +
-    inf_float tmp;
-    tmp = abs_div(a, b);
-    tmp.mantissa.sign = true;
-    tmp.unify_zero_sign();
-    return tmp;
+    ans.normalize();
+
+    return ans;
 }
 
 bool inf_float::is_equal(const inf_float& a, const inf_float& b) {

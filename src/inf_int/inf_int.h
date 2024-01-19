@@ -6,7 +6,6 @@
 
 class inf_int {
 private:
-
     static inf_int abs_add(const inf_int& a, const inf_int& b);
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
     static inf_int abs_mul(const inf_int& a, const inf_int& b);
@@ -39,6 +38,7 @@ public:
     static bool is_less_than(const inf_int& a, const inf_int& b);
 
     friend std::ostream& operator<<(std::ostream& output, const inf_int& num);
+    friend class inf_float;
 
     ~inf_int();
 };

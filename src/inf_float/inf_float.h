@@ -20,8 +20,6 @@ private:
 
     static inf_float abs_add(const inf_float& a, const inf_float& b);
     static inf_float abs_sub(const inf_float& a, const inf_float& b);
-    static inf_float abs_mul(const inf_float& a, const inf_float& b);
-    static inf_float abs_div(const inf_float& a, const inf_float& b);
     static std::string abs_round(const std::string& num, const int& precision, const rounding_style& rounding_style);
     static bool is_abs_less_than(const inf_float& a, const inf_float& b);
 
