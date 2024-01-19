@@ -36,4 +36,15 @@ public:
     ~inf_float();
 };
 
+inf_float operator-(const inf_float& a, const inf_float& b);
+inf_float operator+(const inf_float& a, const inf_float& b);
+inf_float operator*(const inf_float& a, const inf_float& b);
+inf_float operator/(const inf_float& a, const inf_float& b);
+
+bool operator==(const inf_float& a, const inf_float& b);
+bool operator<(const inf_float& a, const inf_float& b);
+bool operator>(const inf_float& a, const inf_float& b);
+bool operator<=(const inf_float& a, const inf_float& b);
+bool operator>=(const inf_float& a, const inf_float& b);
+
 #endif //INF_FLOAT_H

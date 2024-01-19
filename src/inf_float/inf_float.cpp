@@ -321,3 +321,44 @@ bool inf_float::is_less_than(const inf_float& a, const inf_float& b) {
     // + +
     return is_abs_less_than(a, b);
 }
+
+inf_float operator+(const inf_float& a, const inf_float& b) {
+    return inf_float::add(a, b);
+}
+
+inf_float operator-(const inf_float& a, const inf_float& b) {
+    return inf_float::sub(a, b);
+}
+
+inf_float operator*(const inf_float& a, const inf_float& b) {
+    return inf_float::mul(a, b);
+}
+
+inf_float operator/(const inf_float& a, const inf_float& b) {
+    return inf_float::div(a, b);
+}
+
+bool operator==(const inf_float& a, const inf_float& b) {
+    return inf_float::is_equal(a, b);
+}
+
+bool operator<(const inf_float& a, const inf_float& b) {
+    return inf_float::is_less_than(a, b);
+}
+
+bool operator<=(const inf_float& a, const inf_float& b) {
+    return a < b || a == b;
+}
+
+bool operator>(const inf_float& a, const inf_float& b) {
+    return !(a <= b);
+}
+
+bool operator>=(const inf_float& a, const inf_float& b) {
+    return !(a < b);
+}
+
+std::ostream& operator<<(std::ostream& output, const inf_float& num) {
+    output << num.to_string(false);
+    return output;
+}
