@@ -26,6 +26,7 @@ public:
     std::string to_string(const bool& comma) const;
 
     void lshift32(const unsigned int& a);
+    void rshift32(const unsigned int& a);
     void normalize();
     void unify_zero_sign();
     void negate();

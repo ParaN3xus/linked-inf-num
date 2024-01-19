@@ -205,6 +205,15 @@ void inf_int::lshift32(const unsigned int& a) {
     normalize();
 }
 
+void inf_int::rshift32(const unsigned int& a) {
+    int len = digits.length();
+    for (int i = 0; i < a; ++i) {
+        digits.remove(len - 1);
+        --len;
+    }
+    normalize();
+}
+
 void inf_int::negate() {
     if (!digits.is_zero())
         sign = !sign;
