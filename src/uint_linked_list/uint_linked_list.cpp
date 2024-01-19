@@ -124,6 +124,20 @@ int uint_linked_list::get_first_one_pos() const {
     return -1;
 }
 
+int uint_linked_list::count_trailing_zeros() const {
+    int count = 0;
+    node* current = head;
+    while (current != nullptr) {
+        if (current->data != 0) {
+            count = 0;
+        }
+        else {
+            count++;
+        }
+        current = current->next;
+    }
+    return count;
+}
 
 std::string uint_linked_list::to_bit_string() const {
     std::string res = "";

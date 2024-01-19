@@ -62,9 +62,11 @@ void inf_float::unify_zero_sign() {
 void inf_float::normalize() {
     mantissa.normalize();
 
-    if (exponent > 0) {
-        mantissa.lshift32(exponent);
-        exponent = 0;
+    int trailing_zeros = mantissa.digits.count_trailing_zeros();
+
+    if(trailing_zeros > 0) {
+        exponent += trailing_zeros;
+        mantissa.rshift32(trailing_zeros);
     }
 }
 

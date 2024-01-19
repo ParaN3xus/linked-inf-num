@@ -25,6 +25,7 @@ public:
     bool is_zero() const;
     int length() const;
     int get_first_one_pos() const;
+    int count_trailing_zeros() const;
     std::string to_bit_string() const;
 
     static bool is_equal(const uint_linked_list& a, const uint_linked_list& b);
