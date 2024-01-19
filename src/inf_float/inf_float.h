@@ -3,6 +3,13 @@
 
 #include "../inf_int/inf_int.h"
 
+enum rounding_style {
+    ROUND_TO_NEAREST,
+    ROUND_DOWN,
+    ROUND_UP,
+    ROUND_TOWARD_ZERO
+};
+
 class inf_float {
 private:
     inf_int mantissa;
@@ -15,6 +22,7 @@ private:
     static inf_float abs_sub(const inf_float& a, const inf_float& b);
     static inf_float abs_mul(const inf_float& a, const inf_float& b);
     static inf_float abs_div(const inf_float& a, const inf_float& b);
+    static std::string abs_round(const std::string& num, const int& precision, const rounding_style& rounding_style);
     static bool is_abs_less_than(const inf_float& a, const inf_float& b);
 
 public:
@@ -23,6 +31,7 @@ public:
     inf_float(const std::string& num, const int& precision);
 
     std::string to_string(const bool& comma) const;
+    std::string to_string(const bool& comma, const int& precision, const rounding_style& rounding_style) const;
 
     static inf_float add(const inf_float& a, const inf_float& b);
     static inf_float sub(const inf_float& a, const inf_float& b);

@@ -144,7 +144,8 @@ std::string decstr_div2(const std::string& decimal) {
         if (c == '.') {
             result += '.';
             isFraction = true;
-        } else {
+        }
+        else {
             int digit = c - '0';
             int value = remainder * 10 + digit;
             result += std::to_string(value / 2);
@@ -153,7 +154,8 @@ std::string decstr_div2(const std::string& decimal) {
     }
     if (remainder != 0 && !isFraction) {
         result += ".5";
-    } else {
+    }
+    else {
         while (remainder != 0 && isFraction) {
             remainder *= 10;
             result += std::to_string(remainder / 2);
@@ -163,6 +165,23 @@ std::string decstr_div2(const std::string& decimal) {
 
     return result;
 }
+
+std::string decstr_add1(const std::string& decimal) {
+    std::string num = decimal;
+    for (int i = num.size() - 1; i >= 0; --i) {
+        if (num[i] == '.') {
+            continue;
+        }
+        int digit = num[i] - '0';
+        if (++digit < 10) {
+            num[i] = digit + '0';
+            return num;
+        }
+        num[i] = '0';
+    }
+    return '1' + num;
+}
+
 
 std::string add_commas(const std::string& input) {
     size_t point = input.find('.');

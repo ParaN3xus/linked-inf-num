@@ -16,6 +16,7 @@ bool is_sub_overflow(unsigned int a, bool borrow);
 std::string binstr_mut2(const std::string& num);
 std::string binstr_add1(const std::string& num);
 std::string decstr_div2(const std::string& decimal);
+std::string decstr_add1(const std::string& decimal);
 
 std::string add_commas(const std::string& input);
 

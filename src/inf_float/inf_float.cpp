@@ -1,5 +1,6 @@
 #include "inf_float.h"
 #include "../utils/common_utils.h"
+#include <stdexcept>
 
 inf_float::inf_float() {
     this->mantissa = inf_int();
@@ -64,13 +65,13 @@ void inf_float::normalize() {
 
     int trailing_zeros = mantissa.digits.count_trailing_zeros();
 
-    if(trailing_zeros > 0) {
+    if (trailing_zeros > 0) {
         exponent += trailing_zeros;
         mantissa.rshift32(trailing_zeros);
     }
 }
 
-std::string inf_float::to_string(const bool& comma = false) const {
+std::string inf_float::to_string(const bool& comma) const {
     std::string all = mantissa.digits.to_bit_string();
     std::string int_part_bin;
     std::string frac_part_bin;
@@ -116,6 +117,77 @@ std::string inf_float::to_string(const bool& comma = false) const {
 
     return int_part + frac_part.substr(1, frac_part.length() - 1);
 }
+
+std::string inf_float::to_string(const bool& comma, const int& dec_place, const rounding_style& rounding_style) const {
+    std::string raw_str = to_string(false);
+    std::string int_part;
+    std::string frac_part;
+
+    int dot_pos = raw_str.find('.');
+    if (dot_pos == std::string::npos || dec_place <= 0) {
+        if (comma) {
+            raw_str = add_commas(raw_str);
+        }
+        return raw_str;
+    }
+
+    // int_part = raw_str.substr(0, dot_pos);
+    // frac_part = raw_str.substr(dot_pos + 1, raw_str.length() - dot_pos - 1);
+
+    if (raw_str.length() - dot_pos - 1 <= dec_place) {
+        if (comma) {
+            raw_str = add_commas(raw_str);
+        }
+        return raw_str + std::string(dec_place - (raw_str.length() - dot_pos - 1), '0');
+    }
+
+    switch (rounding_style) {
+    case ROUND_TOWARD_ZERO:
+        if (comma) {
+            raw_str = add_commas(raw_str);
+        }
+        return raw_str.substr(0, 1 + dot_pos + dec_place);
+        break;
+
+    case ROUND_DOWN:
+        if (raw_str[0] == '-') {
+            raw_str = '-' + abs_round(raw_str.substr(1), dec_place, ROUND_UP);
+        }
+        else {
+            raw_str = abs_round(raw_str, dec_place, ROUND_DOWN);
+        }
+        if (comma) {
+            raw_str = add_commas(raw_str);
+        }
+        return raw_str;
+        break;
+
+    case ROUND_UP:
+        if (raw_str[0] == '-') {
+            raw_str = '-' + abs_round(raw_str.substr(1), dec_place, ROUND_DOWN);
+        }
+        else {
+            raw_str = abs_round(raw_str, dec_place, ROUND_UP);
+        }
+        if (comma) {
+            raw_str = add_commas(raw_str);
+        }
+        return raw_str;
+        break;
+
+    case ROUND_TO_NEAREST:
+        raw_str = abs_round(raw_str, dec_place, ROUND_TO_NEAREST);
+        if (comma) {
+            raw_str = add_commas(raw_str);
+        }
+        return raw_str;
+        break;
+
+    default:
+        throw std::invalid_argument("Invalid rounding style");
+    }
+}
+
 
 inf_float inf_float::abs_add(const inf_float& a, const inf_float& b) {
     inf_float x, y, ans;
@@ -182,6 +254,50 @@ inf_float inf_float::abs_div(const inf_float& a, const inf_float& b) {
 
     return ans;
 }
+
+std::string inf_float::abs_round(const std::string& num, const int& dec_place, const rounding_style& rounding_style) {
+    int dot_pos = num.find('.');
+    std::string tmp = num.substr(0, dot_pos + 1 + dec_place);
+
+    bool neg, carry;
+
+    switch (rounding_style) {
+    case ROUND_DOWN:
+        return tmp;
+        break;
+    case ROUND_UP:
+        return decstr_add1(tmp);
+        break;
+    case ROUND_TO_NEAREST:
+        if (tmp[0] == '-') {
+            neg = true;
+            tmp = tmp.substr(1);
+        }
+        else {
+            neg = false;
+        }
+
+        carry = num[dot_pos + 1 + dec_place] >= '5';
+
+        if (neg) {
+            carry = !carry;
+        }
+
+        if (carry) {
+            tmp = decstr_add1(tmp.substr(0, dot_pos + 1 + dec_place));
+        }
+
+        if (neg) {
+            tmp = '-' + tmp;
+        }
+
+        return tmp;
+        break;
+    default:
+        throw std::invalid_argument("Invalid rounding style");
+    }
+}
+
 
 bool inf_float::is_abs_less_than(const inf_float& a, const inf_float& b) {
     inf_float x, y;
