@@ -161,6 +161,26 @@ inf_float inf_float::abs_sub(const inf_float& a, const inf_float& b) {
     return ans;
 }
 
+inf_float inf_float::abs_mul(const inf_float& a, const inf_float& b) {
+    inf_float ans;
+    ans.exponent = a.exponent + b.exponent;
+    ans.mantissa = a.mantissa * b.mantissa;
+
+    ans.normalize();
+
+    return ans;
+}
+
+inf_float inf_float::abs_div(const inf_float& a, const inf_float& b) {
+    inf_float ans;
+    ans.exponent = a.exponent - b.exponent;
+    ans.mantissa = a.mantissa / b.mantissa;
+
+    ans.normalize();
+
+    return ans;
+}
+
 bool inf_float::is_abs_less_than(const inf_float& a, const inf_float& b) {
     inf_float x, y;
     //x: bigger exponent
@@ -233,7 +253,6 @@ inf_float inf_float::sub(const inf_float& a, const inf_float& b) {
     return tmp;
 }
 
-/*
 inf_float inf_float::mul(const inf_float& a, const inf_float& b) {
     // + + or - -
     if (a.mantissa.sign == b.mantissa.sign) {
@@ -247,7 +266,20 @@ inf_float inf_float::mul(const inf_float& a, const inf_float& b) {
     tmp.unify_zero_sign();
     return tmp;
 }
-*/
+
+inf_float inf_float::div(const inf_float& a, const inf_float& b) {
+    // + + or - -
+    if (a.mantissa.sign == b.mantissa.sign) {
+        return abs_div(a, b);
+    }
+
+    // + - or - +
+    inf_float tmp;
+    tmp = abs_div(a, b);
+    tmp.mantissa.sign = true;
+    tmp.unify_zero_sign();
+    return tmp;
+}
 
 bool inf_float::is_equal(const inf_float& a, const inf_float& b) {
     if (a.mantissa.sign != b.mantissa.sign) {
