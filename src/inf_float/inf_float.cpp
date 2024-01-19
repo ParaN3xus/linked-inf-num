@@ -36,7 +36,7 @@ inf_float::inf_float(const std::string& n, const int& precision) {
     frac_part = num.substr(dot_pos + 1, num.length() - dot_pos - 1);
 
     this->mantissa = inf_int(int_part);
-    if(is_negative) {
+    if (is_negative) {
         this->mantissa.sign = true;
     }
 
@@ -87,6 +87,10 @@ std::string inf_float::to_string(const bool& comma) const {
     if (exponent >= 0) {
         int_part_bin = all + std::string(exponent * 32, '0');
         frac_part_bin = "";
+    }
+    else if (exponent < -mantissa.digits.length()) {
+        int_part_bin = "";
+        frac_part_bin = std::string(-exponent * 32, '0') + all;
     }
     else {
         int_part_bin = all.substr(0, 32 * (mantissa.digits.length() + exponent));
@@ -226,7 +230,7 @@ inf_float inf_float::abs_sub(const inf_float& a, const inf_float& b) {
     inf_float x = a, y = b, ans;
     bool x_exponent_bigger = x.exponent > y.exponent;
 
-    if(x_exponent_bigger) {
+    if (x_exponent_bigger) {
         x.mantissa.lshift32(x.exponent - y.exponent);
         ans.exponent = y.exponent;
     }
@@ -287,21 +291,17 @@ std::string inf_float::abs_round(const std::string& num, const int& dec_place, c
 
 
 bool inf_float::is_abs_less_than(const inf_float& a, const inf_float& b) {
-    inf_float x, y;
-    //x: bigger exponent
-    if (a.exponent > b.exponent) {
-        x = a;
-        y = b;
+    inf_float x = a, y = b;
+    bool x_exponent_bigger = x.exponent > y.exponent;
+
+    if (x_exponent_bigger) {
+        x.mantissa.lshift32(x.exponent - y.exponent);
     }
     else {
-        x = b;
-        y = a;
+        y.mantissa.lshift32(y.exponent - x.exponent);
     }
 
-    x.mantissa.lshift32(x.exponent - y.exponent);
-    //x.exponent = y.exponent;
-
-    return x.mantissa < y.mantissa;
+    return inf_int::is_abs_less_than(x.mantissa, y.mantissa);
 }
 
 
@@ -372,6 +372,25 @@ inf_float inf_float::div(const inf_float& a, const inf_float& b) {
     inf_float ans;
     ans.exponent = a.exponent - b.exponent;
     ans.mantissa = a.mantissa / b.mantissa;
+
+    ans.normalize();
+
+    return ans;
+}
+
+inf_float inf_float::div(const inf_float& a, const inf_float& b, const int& precision) {
+    inf_float ans;
+    inf_float x = a, y = b;
+
+    if (precision > y.exponent - x.exponent) {
+        x.mantissa.lshift32(x.exponent - y.exponent + precision);
+    }
+    else {
+        y.mantissa.lshift32(-x.exponent + y.exponent - precision);
+    }
+
+    ans.exponent = -precision;
+    ans.mantissa = x.mantissa / y.mantissa;
 
     ans.normalize();
 

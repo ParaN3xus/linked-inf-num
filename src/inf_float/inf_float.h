@@ -35,6 +35,7 @@ public:
     static inf_float sub(const inf_float& a, const inf_float& b);
     static inf_float mul(const inf_float& a, const inf_float& b);
     static inf_float div(const inf_float& a, const inf_float& b);
+    static inf_float div(const inf_float& a, const inf_float& b, const int& precision);
     static bool is_equal(const inf_float& a, const inf_float& b);
     static bool is_less_than(const inf_float& a, const inf_float& b);
 
