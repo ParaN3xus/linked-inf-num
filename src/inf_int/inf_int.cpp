@@ -282,9 +282,11 @@ inf_int inf_int::abs_div(const inf_int& a, const inf_int& b, inf_int& remainder)
     int len_a = a.digits.length();
     int len_b = b.digits.length();
 
+    inf_int tmp = b;
+    tmp.lshift32(len_a - len_b + 1);
+
     for (int i = len_b - 1; i < len_a; ++i) {
-        inf_int tmp = b;
-        tmp.lshift32(len_a - i - 1);
+        tmp.rshift32(1);
         if (uint_linked_list::is_bitval_less_than(remainder.digits, tmp.digits)) {
             res.digits.append(0);
             continue;
@@ -302,7 +304,6 @@ inf_int inf_int::abs_div(const inf_int& a, const inf_int& b, inf_int& remainder)
 
             bool min_less_than_remainder = uint_linked_list::is_bitval_less_than(minuend.digits, remainder.digits);
             bool over_min_less_than_remainder = uint_linked_list::is_bitval_less_than(over_minuend.digits, remainder.digits);
-
 
             /*
             ---------------------->
