@@ -30,10 +30,14 @@ inf_float::inf_float(const std::string& n, const int& precision) {
     int dot_pos = num.find('.');
     if (dot_pos == std::string::npos) {
         dot_pos = num.length();
+        int_part = num.substr(0, dot_pos);
+        frac_part = "";
+    }
+    else {
+        int_part = num.substr(0, dot_pos);
+        frac_part = num.substr(dot_pos + 1, num.length() - dot_pos - 1);
     }
 
-    int_part = num.substr(0, dot_pos);
-    frac_part = num.substr(dot_pos + 1, num.length() - dot_pos - 1);
 
     this->mantissa = inf_int(int_part);
     if (is_negative) {
