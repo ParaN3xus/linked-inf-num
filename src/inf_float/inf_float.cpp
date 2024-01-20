@@ -397,6 +397,10 @@ inf_float inf_float::div(const inf_float& a, const inf_float& b, const int& prec
     }
 
     ans.exponent = -precision;
+
+    x.mantissa.normalize();
+    y.mantissa.normalize();
+
     ans.mantissa = x.mantissa / y.mantissa;
 
     ans.normalize();
