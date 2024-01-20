@@ -295,7 +295,7 @@ inf_int inf_int::abs_div(const inf_int& a, const inf_int& b, inf_int& remainder)
             continue;
         }
 
-        int d = tmp.digits.get_first_one_pos() - remainder.digits.get_first_one_pos() + 32 * (remainder.digits.length() - tmp.digits.length());
+        int d = tmp.digits.get_first_one_pos() - remainder.digits.get_first_one_pos() + INF_INT_DIGIT_SIZE * (remainder.digits.length() - tmp.digits.length());
         unsigned int upper = leftshift_1fixed(1, (d > 31 ? 31 : d)), lower = 1 << (d - 1 < 0 ? 0 : d - 1);
         unsigned int mid;
 

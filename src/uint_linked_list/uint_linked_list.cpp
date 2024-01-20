@@ -118,7 +118,7 @@ int uint_linked_list::get_first_one_pos() const {
                 }
             }
         }
-        pos += 32;
+        pos += INF_INT_DIGIT_SIZE;
         current = current->next;
     }
     return -1;

@@ -12,7 +12,7 @@ inf_float::inf_float(const inf_float& other) {
     this->exponent = other.exponent;
 }
 
-// precision in 43e base n is equivalent to precision in 10 base 32lg2 * n
+// precision in 43e base n is equivalent to precision in 10 base INF_INT_DIGIT_SIZE * lg(2) * n
 inf_float::inf_float(const std::string& n, const int& precision) {
     if(!is_vaild_decimal(n))
         throw std::invalid_argument("Invalid decimal number: " + n);
@@ -49,19 +49,19 @@ inf_float::inf_float(const std::string& n, const int& precision) {
 
     len = this->mantissa.digits.length();
 
-    frac_bin = inf_frac_str2bin_str(frac_part, precision * 32);
+    frac_bin = inf_frac_str2bin_str(frac_part, precision * INF_INT_DIGIT_SIZE);
 
-    for (int i = 0; i < frac_bin.length(); i += 32) {
+    for (int i = 0; i < frac_bin.length(); i += INF_INT_DIGIT_SIZE) {
         unsigned int tmp = 0;
-        for (int j = 0; j < 32; j++) {
-            tmp += (frac_bin[i + j] - '0') << (31 - j);
+        for (int j = 0; j < INF_INT_DIGIT_SIZE; j++) {
+            tmp += (frac_bin[i + j] - '0') << (INF_INT_DIGIT_SIZE - 1 - j);
         }
 
         mantissa.digits.insert(len, tmp);
         len++;
     }
 
-    this->exponent = -frac_bin.length() / 32;
+    this->exponent = -frac_bin.length() / INF_INT_DIGIT_SIZE;
 }
 
 inf_float::~inf_float() {
@@ -92,16 +92,16 @@ std::string inf_float::to_string(const bool& comma) const {
     std::string int_part_bin;
     std::string frac_part_bin;
     if (exponent >= 0) {
-        int_part_bin = all + std::string(exponent * 32, '0');
+        int_part_bin = all + std::string(exponent * INF_INT_DIGIT_SIZE, '0');
         frac_part_bin = "";
     }
     else if (exponent < -mantissa.digits.length()) {
         int_part_bin = "";
-        frac_part_bin = std::string(-exponent * 32, '0') + all;
+        frac_part_bin = std::string(-exponent * INF_INT_DIGIT_SIZE, '0') + all;
     }
     else {
-        int_part_bin = all.substr(0, 32 * (mantissa.digits.length() + exponent));
-        frac_part_bin = all.substr(32 * (mantissa.digits.length() + exponent), -exponent * 32);
+        int_part_bin = all.substr(0, INF_INT_DIGIT_SIZE * (mantissa.digits.length() + exponent));
+        frac_part_bin = all.substr(INF_INT_DIGIT_SIZE * (mantissa.digits.length() + exponent), -exponent * INF_INT_DIGIT_SIZE);
     }
 
     // int
