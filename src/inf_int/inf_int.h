@@ -6,10 +6,11 @@
 
 class inf_int {
 private:
-    void normalize();
-    void unify_zero_sign();
     bool sign;
     uint_linked_list digits;
+
+    void normalize();
+    void unify_zero_sign();
 
     static inf_int abs_add(const inf_int& a, const inf_int& b);
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
