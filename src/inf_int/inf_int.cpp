@@ -75,9 +75,9 @@ std::string inf_int::to_string(const bool& comma = false) const {
 
     std::string res = "0";
     for (int i = 0; i < binstr.length(); ++i) {
-        res = binstr_mut2(res);
+        res = decstr_mut2(res);
         if (binstr[i] == '1') {
-            res = binstr_add1(res);
+            res = decstr_add1_i(res);
         }
     }
 

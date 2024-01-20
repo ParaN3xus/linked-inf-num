@@ -145,7 +145,7 @@ bool is_vaild_decimal(const std::string& num) {
 }
 
 
-std::string binstr_mut2(const std::string& num) {
+std::string decstr_mut2(const std::string& num) {
     std::string result;
     int carry = 0;
     for (int i = num.length() - 1; i >= 0; --i) {
@@ -160,7 +160,7 @@ std::string binstr_mut2(const std::string& num) {
     return result;
 }
 
-std::string binstr_add1(const std::string& num) {
+std::string decstr_add1_i(const std::string& num) {
     std::string result = num;
     int carry = 1;
     for (int i = num.length() - 1; i >= 0 && carry > 0; --i) {

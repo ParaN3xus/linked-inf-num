@@ -107,9 +107,9 @@ std::string inf_float::to_string(const bool& comma) const {
     // int
     std::string int_part = "0";
     for (int i = 0; i < int_part_bin.length(); ++i) {
-        int_part = binstr_mut2(int_part);
+        int_part = decstr_mut2(int_part);
         if (int_part_bin[i] == '1') {
-            int_part = binstr_add1(int_part);
+            int_part = decstr_add1_i(int_part);
         }
     }
 
