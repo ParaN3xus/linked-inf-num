@@ -14,6 +14,9 @@ inf_float::inf_float(const inf_float& other) {
 
 // precision in 43e base n is equivalent to precision in 10 base 32lg2 * n
 inf_float::inf_float(const std::string& n, const int& precision) {
+    if(!is_vaild_decimal(n))
+        throw std::invalid_argument("Invalid decimal number: " + n);
+
     std::string num = n;
     std::string int_part;
     std::string frac_part;

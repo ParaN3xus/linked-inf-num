@@ -13,6 +13,9 @@ inf_int::inf_int(const inf_int& other) {
 }
 
 inf_int::inf_int(const std::string& s) {
+    if (!is_vaild_int(s))
+        throw std::runtime_error("Invalid integer: " + s);
+
     std::string num = s;
     if (num[0] == '-') {
         sign = true;

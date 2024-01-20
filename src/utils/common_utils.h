@@ -13,6 +13,9 @@ bool is_add_overflow(unsigned int a, bool carry);
 bool is_sub_overflow(unsigned int a, unsigned int b, bool borrow);
 bool is_sub_overflow(unsigned int a, bool borrow);
 
+bool is_vaild_int(const std::string& num);
+bool is_vaild_decimal(const std::string& num);
+
 std::string binstr_mut2(const std::string& num);
 std::string binstr_add1(const std::string& num);
 std::string decstr_div2(const std::string& decimal);

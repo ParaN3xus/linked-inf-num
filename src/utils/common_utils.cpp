@@ -106,6 +106,45 @@ bool is_sub_overflow(unsigned int a, unsigned int b, bool borrow) {
     return false;
 }
 
+bool is_vaild_int(const std::string& num) {
+    if (num.empty()) {
+        return false;
+    }
+
+    size_t start = (num[0] == '-') ? 1 : 0;
+
+    for (size_t i = start; i < num.length(); ++i) {
+        if (!std::isdigit(num[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool is_vaild_decimal(const std::string& num) {
+    if (num.empty()) {
+        return false;
+    }
+
+    size_t start = (num[0] == '-') ? 1 : 0;
+
+    bool foundpoint = false;
+
+    for (size_t i = start; i < num.length(); ++i) {
+        if (std::isdigit(num[i])) {
+            continue;
+        } else if (num[i] == '.' && !foundpoint) {
+            foundpoint = true;
+        } else {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 std::string binstr_mut2(const std::string& num) {
     std::string result;
     int carry = 0;
