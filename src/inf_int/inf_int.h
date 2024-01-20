@@ -6,6 +6,11 @@
 
 class inf_int {
 private:
+    void normalize();
+    void unify_zero_sign();
+    bool sign;
+    uint_linked_list digits;
+
     static inf_int abs_add(const inf_int& a, const inf_int& b);
     static inf_int abs_sub(const inf_int& a, const inf_int& b);
     static inf_int abs_mul(const inf_int& a, const inf_int& b);
@@ -14,9 +19,6 @@ private:
     static bool is_abs_less_than(const inf_int& a, const inf_int& b);
 
 public:
-    bool sign;
-    uint_linked_list digits;
-
     inf_int();
     inf_int(const inf_int& other);
     inf_int(const int& num);
@@ -26,8 +28,7 @@ public:
 
     void lshift32(const unsigned int& a);
     void rshift32(const unsigned int& a);
-    void normalize();
-    void unify_zero_sign();
+
     void negate();
 
     static inf_int add(const inf_int& a, const inf_int& b);
