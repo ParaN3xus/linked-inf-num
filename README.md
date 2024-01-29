@@ -1,6 +1,6 @@
-# linked_inf_num - High Precision C++ Library
+# linked_inf_num
 
-linked_inf_num is a C++ library designed for high-precision arithmetic operations. It utilizes a linked list-based approach to handle numbers with arbitrary precision, making it suitable for applications that require accurate calculations beyond the limitations of standard data types.
+`linked_inf_num` is a C++ library designed for **high-precision arithmetic operations**. It utilizes a linked list-based approach to handle numbers with arbitrary precision, making it suitable for applications that require accurate calculations beyond the limitations of standard data types.
 
 ## Features
 
@@ -12,7 +12,7 @@ linked_inf_num is a C++ library designed for high-precision arithmetic operation
 
 - **Linked List Implementation:** The library uses a linked list structure to dynamically allocate memory for storing digits. 
 
-    > **Note:** The use of linked lists may not be an optimal choice in terms of memory and time efficiency. However, it is a mandatory requirement for this library as my C++ course assignment. If performance is a concern, consider implementing `uint_linked_list` using `vector<unsigned int>`.
+    > **Note:** The use of linked lists may **NOT** be an optimal choice in terms of memory and time efficiency. However, it is a mandatory requirement for this library as my C++ course assignment. If performance is a concern, consider implementing `uint_linked_list` using `vector<unsigned int>`.
 
 ## Usage
 
