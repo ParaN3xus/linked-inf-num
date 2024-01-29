@@ -2,30 +2,36 @@
 #define COMMON_UTILS_H
 
 #include<string>
+#include<limits>
 
-std::string inf_int_str2bin_str(const std::string& num);
-std::string inf_frac_str2bin_str(const std::string& num, const int& bits);
+namespace linked_inf_num {
 
-bool is_add_overflow(unsigned int a, unsigned int b, bool carry);
-bool is_add_overflow(unsigned int a, unsigned int b);
-bool is_add_overflow(unsigned int a, bool carry);
+    std::string inf_int_str2bin_str(const std::string& num);
+    std::string inf_frac_str2bin_str(const std::string& num, const int& bits);
 
-bool is_sub_overflow(unsigned int a, unsigned int b, bool borrow);
-bool is_sub_overflow(unsigned int a, bool borrow);
+    bool is_add_overflow(unsigned int a, unsigned int b, bool carry);
+    bool is_add_overflow(unsigned int a, unsigned int b);
+    bool is_add_overflow(unsigned int a, bool carry);
 
-bool is_vaild_int(const std::string& num);
-bool is_vaild_decimal(const std::string& num);
+    bool is_sub_overflow(unsigned int a, unsigned int b, bool borrow);
+    bool is_sub_overflow(unsigned int a, bool borrow);
 
-std::string decstr_mut2(const std::string& num);
-std::string decstr_add1_i(const std::string& num);
-std::string decstr_div2(const std::string& decimal);
-std::string decstr_add1(const std::string& decimal);
+    bool is_vaild_int(const std::string& num);
+    bool is_vaild_decimal(const std::string& num);
 
-std::string add_commas(const std::string& input);
+    std::string decstr_mut2(const std::string& num);
+    std::string decstr_add1_i(const std::string& num);
+    std::string decstr_div2(const std::string& decimal);
+    std::string decstr_add1(const std::string& decimal);
 
-unsigned int leftshift_1fixed(unsigned int a, unsigned int b);
+    std::string add_commas(const std::string& input);
 
-const int INF_INT_DIGIT_SIZE = 32;
+    unsigned int leftshift_1fixed(unsigned int a, unsigned int b);
+
+    const int INF_INT_DIGIT_SIZE = 32;
+
+}
+
+
 #define UINT_MAX UINT32_MAX
-
 #endif // COMMON_UTILS_H
