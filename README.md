@@ -65,6 +65,7 @@ In this example, the parameter `3` in `inf_float()` and `inf_float::div()` means
 - [ ] Mathematical functions.
 - [ ] More operators.
 - [ ] Calculations between `inf_num` and `int` and `float`, `inf_int` and `inf_float`.
+- [ ] `inf_real` class.
 - [ ] Detailed documents.
 
 ## Contributing
