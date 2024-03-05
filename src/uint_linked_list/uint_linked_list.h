@@ -1,17 +1,12 @@
 #ifndef UINT_LINKED_LIST_H
 #define UINT_LINKED_LIST_H
 
+#include<vector>
+
 namespace linked_inf_num {
     class uint_linked_list {
     private:
-        struct node {
-            unsigned int data;
-            node* next;
-        };
-
-        node* head;
-        node* current = nullptr;
-        int current_index = -1;
+        std::vector<unsigned> vec;
 
     public:
         uint_linked_list();
