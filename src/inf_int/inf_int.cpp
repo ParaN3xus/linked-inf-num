@@ -320,7 +320,7 @@ namespace linked_inf_num {
                 */
 
                 if (over_min_less_than_remainder && min_less_than_remainder) {
-                    lower = mid;
+                    lower = (lower == mid ? upper : mid);
                     continue;
                 }
                 if (!over_min_less_than_remainder && min_less_than_remainder) {
