@@ -98,7 +98,7 @@ namespace linked_inf_num {
         }
         else if (exponent < -mantissa.digits.length()) {
             int_part_bin = "";
-            frac_part_bin = std::string(-exponent * INF_INT_DIGIT_SIZE, '0') + all;
+            frac_part_bin = std::string((-exponent + mantissa.digits.length()) * INF_INT_DIGIT_SIZE, '0') + all;
         }
         else {
             int_part_bin = all.substr(0, INF_INT_DIGIT_SIZE * (mantissa.digits.length() + exponent));
